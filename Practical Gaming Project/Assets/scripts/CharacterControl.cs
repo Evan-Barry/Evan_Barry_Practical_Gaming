@@ -5,13 +5,18 @@ using UnityEngine;
 public class CharacterControl : MonoBehaviour {
 
     public float moveSpeed;
-    public float turnSpeed;
     enum directionFacing {up, left, down, right};
-    directionFacing thisDirection = directionFacing.up;
+    directionFacing thisDirection = directionFacing.right;
+    enum stance {standing, prone};
+    stance currentStance = stance.standing;
+
+    Animator anim;
 
     // Use this for initialization
     void Start () {
 		
+        anim = GetComponent<Animator>();
+
 	}
 	
 	// Update is called once per frame
@@ -22,19 +27,29 @@ public class CharacterControl : MonoBehaviour {
             moveUp(moveSpeed);
         }
 
-        if (Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(KeyCode.A))
         {
             moveLeft(moveSpeed);
         }
 
-        if (Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.S))
         {
             moveDown(moveSpeed);
         }
 
-        if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D))
         {
             moveRight(moveSpeed);
+        }
+
+        else
+        {
+            anim.SetBool("Moving", false);
+        }
+
+        if(Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            changeStance(currentStance);
         }
 
         Camera.main.transform.position = transform.position + new Vector3(0, 3, -10);
@@ -126,6 +141,7 @@ public class CharacterControl : MonoBehaviour {
     {
         //throw new System.NotImplementedException();
         transform.position += speed * transform.forward * Time.deltaTime;
+        anim.SetBool("Moving", true);
     }
 
     /// <summary>
@@ -157,6 +173,22 @@ public class CharacterControl : MonoBehaviour {
         {
             transform.eulerAngles = new Vector3(transform.rotation.x, 270, transform.rotation.z);
             thisDirection = directionFacing.left;
+        }
+    }
+
+    private void changeStance(stance stance)
+    {
+        if(stance == stance.standing)
+        {
+            moveSpeed = 1;
+            anim.SetBool("Sneaking", true);
+            currentStance = stance.prone;
+        }
+        else
+        {
+            moveSpeed = 2;
+            anim.SetBool("Sneaking", false);
+            currentStance = stance.standing;
         }
     }
 }

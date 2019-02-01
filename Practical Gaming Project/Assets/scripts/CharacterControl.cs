@@ -6,7 +6,7 @@ public class CharacterControl : MonoBehaviour {
 
     public float moveSpeed;
     enum directionFacing {up, left, down, right};
-    directionFacing thisDirection = directionFacing.right;
+    directionFacing thisDirection = directionFacing.up;
     enum stance {standing, prone};
     stance currentStance = stance.standing;
 

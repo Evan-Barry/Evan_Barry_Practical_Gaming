@@ -7,11 +7,7 @@ public class enemyController : MonoBehaviour {
 
     Vector3 enemyToPlayerVector;
     double enemyToPlayerDistance;
-    Boolean enemyFacingPlayer = false;
-    double enemyVectorLength;
-    double playerVectorLength;
     double enemyToPlayerAngle;
-    double enemyToPlayerAngleInDegrees;
     
     GameObject playerGO;
     GameObject spotLightGO;
@@ -26,7 +22,7 @@ public class enemyController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if(Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W))
         {
             transform.position += transform.forward * Time.deltaTime;
         }
@@ -53,19 +49,19 @@ public class enemyController : MonoBehaviour {
 
         getPlayerPosition();
 
-        getEnemytoPlayerVector();
+        enemyToPlayerVector = getEnemytoPlayerVector();
 
-        getEnemyToPlayerDistance();
+        enemyToPlayerDistance = getEnemyToPlayerDistance();
 
         getEnemyForward();
 
-        enemyFacingPlayer = getEnemyFacingPlayer();
+        enemyToPlayerAngle = getAngleToPlayer();
 
-        isEnemyFacingPlayer();
-
-        getAngleToPlayer();
-
-        //getVectorDotProduct();
+        if(enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45)
+        {
+            //enemy sighted
+            Debug.Log("ENEMY SIGHTED!");
+        }
     }
 
     void getEnemyForward()
@@ -73,11 +69,11 @@ public class enemyController : MonoBehaviour {
         Debug.Log("Enemy Forward" + transform.forward);
     }
 
-    void getEnemytoPlayerVector()
+    Vector3 getEnemytoPlayerVector()
     {
-        enemyToPlayerVector = new Vector3((playerGO.transform.position.x - transform.position.x), (playerGO.transform.position.y - transform.position.y), (playerGO.transform.position.z - transform.position.z));
-
         Debug.Log("Enemy to Player Vector" + enemyToPlayerVector);
+
+        return playerGO.transform.position - transform.position;
     }
 
     void getEnemyPosition()
@@ -90,56 +86,26 @@ public class enemyController : MonoBehaviour {
         Debug.Log("Player Position - " + playerGO.transform.position);
     }
 
-    void getEnemyToPlayerDistance()
+    double getEnemyToPlayerDistance()
     {
-        enemyToPlayerDistance = Math.Sqrt((enemyToPlayerVector.x * enemyToPlayerVector.x) + (enemyToPlayerVector.y * enemyToPlayerVector.y) + (enemyToPlayerVector.z * enemyToPlayerVector.z));
-
         Debug.Log("Enemy to Player Distance - " + enemyToPlayerDistance);
+
+        return Math.Sqrt((enemyToPlayerVector.x * enemyToPlayerVector.x) + (enemyToPlayerVector.y * enemyToPlayerVector.y) + (enemyToPlayerVector.z * enemyToPlayerVector.z));
     }
 
-
-
-    Boolean getEnemyFacingPlayer()
-    {
-        if(getVectorDotProduct() > 0)
-        {
-            return true;
-        }
-
-        else
-        {
-            return false;
-        }
-    }
-
-    void isEnemyFacingPlayer()
-    {
-        if(enemyFacingPlayer)
-        {
-            Debug.Log("Enemy is facing player");
-        }
-        else
-        {
-            Debug.Log("Enemy is NOT facing player");
-        }
-    }
-
-    void getAngleToPlayer()
+    double getAngleToPlayer()
     {
         //enemyToPlayerVector(dotProduct) / (enemyVectorLength * playerVectorLength) = COS θ
 
-        enemyVectorLength = Math.Sqrt((transform.position.x * transform.position.x) + (transform.position.y * transform.position.x) + (transform.position.z * transform.position.x));
-        playerVectorLength = Math.Sqrt((playerGO.transform.position.x * playerGO.transform.position.x) + (playerGO.transform.position.y * playerGO.transform.position.x) + (playerGO.transform.position.z * playerGO.transform.position.x));
+        //enemyVectorLength = Math.Sqrt((transform.position.x * transform.position.x) + (transform.position.y * transform.position.x) + (transform.position.z * transform.position.x));
+        //playerVectorLength = Math.Sqrt((playerGO.transform.position.x * playerGO.transform.position.x) + (playerGO.transform.position.y * playerGO.transform.position.x) + (playerGO.transform.position.z * playerGO.transform.position.x));
 
-        enemyToPlayerAngle = Math.Acos(getVectorDotProduct() / (enemyVectorLength * playerVectorLength));
+        //enemyToPlayerAngle = Math.Acos(getVectorDotProduct() / (enemyVectorLength * playerVectorLength));
 
-        enemyToPlayerAngleInDegrees = enemyToPlayerAngle * 180 / Math.PI;
+        //enemyToPlayerAngleInDegrees = enemyToPlayerAngle * 180 / Math.PI;
 
-        Debug.Log("Enemy to Player Angle - " + enemyToPlayerAngleInDegrees);
-    }
+        Debug.Log("Enemy to Player Angle - " + Vector3.Angle(playerGO.transform.position, transform.forward));
 
-    double getVectorDotProduct()
-    {
-        return ((enemyToPlayerVector.x * transform.forward.x) + (enemyToPlayerVector.y * transform.forward.y) + (enemyToPlayerVector.z * transform.forward.z));
+        return Vector3.Angle(playerGO.transform.position, transform.forward);
     }
 }

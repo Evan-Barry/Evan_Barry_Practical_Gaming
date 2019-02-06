@@ -12,6 +12,8 @@ public class CharacterControl : MonoBehaviour {
 
     Animator anim;
 
+    public Camera radarCamera;
+
     // Use this for initialization
     void Start () {
 		
@@ -53,6 +55,7 @@ public class CharacterControl : MonoBehaviour {
         }
 
         Camera.main.transform.position = transform.position + new Vector3(0, 3, -10);
+        radarCamera.transform.position = transform.position + new Vector3(0, 15, 0);
 
     }
 

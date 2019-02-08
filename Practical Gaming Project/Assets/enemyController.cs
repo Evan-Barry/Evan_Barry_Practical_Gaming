@@ -22,32 +22,32 @@ public class enemyController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (Input.GetKey(KeyCode.W))
-        {
-            transform.position += transform.forward * Time.deltaTime;
-        }
+        //if (Input.GetKey(KeyCode.W))
+        //{
+        //    transform.position += transform.forward * Time.deltaTime;
+        //}
 
-        if (Input.GetKey(KeyCode.S))
-        {
-            transform.position -= transform.forward * Time.deltaTime;
-        }
+        //if (Input.GetKey(KeyCode.S))
+        //{
+        //    transform.position -= transform.forward * Time.deltaTime;
+        //}
 
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.Rotate(Vector3.up * -40 * Time.deltaTime); 
-        }
+        //if (Input.GetKey(KeyCode.A))
+        //{
+        //    transform.Rotate(Vector3.up * -40 * Time.deltaTime);
+        //}
 
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.Rotate(Vector3.up * 40 * Time.deltaTime);
-        }
+        //if (Input.GetKey(KeyCode.D))
+        //{
+        //    transform.Rotate(Vector3.up * 40 * Time.deltaTime);
+        //}
 
         spotLightGO.transform.position = transform.position;
         spotLightGO.transform.rotation = transform.rotation;
 
-        getEnemyPosition();
+        //getEnemyPosition();
 
-        getPlayerPosition();
+        //getPlayerPosition();
 
         enemyToPlayerVector = getEnemytoPlayerVector();
 
@@ -71,7 +71,7 @@ public class enemyController : MonoBehaviour {
 
     Vector3 getEnemytoPlayerVector()
     {
-        Debug.Log("Enemy to Player Vector" + enemyToPlayerVector);
+        //Debug.Log("Enemy to Player Vector" + enemyToPlayerVector);
 
         return playerGO.transform.position - transform.position;
     }
@@ -104,8 +104,8 @@ public class enemyController : MonoBehaviour {
 
         //enemyToPlayerAngleInDegrees = enemyToPlayerAngle * 180 / Math.PI;
 
-        Debug.Log("Enemy to Player Angle - " + Vector3.Angle(playerGO.transform.position, transform.forward));
+        Debug.Log("Enemy to Player Angle - " + Vector3.Angle(enemyToPlayerVector, transform.forward));
 
-        return Vector3.Angle(playerGO.transform.position, transform.forward);
+        return Vector3.Angle(enemyToPlayerVector, transform.forward);
     }
 }

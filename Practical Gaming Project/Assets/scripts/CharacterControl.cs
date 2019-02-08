@@ -54,7 +54,7 @@ public class CharacterControl : MonoBehaviour {
             changeStance(currentStance);
         }
 
-        Camera.main.transform.position = transform.position + new Vector3(0, 3, -10);
+        Camera.main.transform.position = transform.position + new Vector3(0, 4, -8);
         radarCamera.transform.position = transform.position + new Vector3(0, 15, 0);
 
     }

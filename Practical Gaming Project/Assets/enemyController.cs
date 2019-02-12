@@ -11,12 +11,15 @@ public class enemyController : MonoBehaviour {
     
     GameObject playerGO;
     GameObject spotLightGO;
+    
 
 	// Use this for initialization
 	void Start () {
         playerGO = GameObject.FindGameObjectWithTag("Player");
 
         spotLightGO = GameObject.FindGameObjectWithTag("EnemySpotLight");
+            
+        
     }
 	
 	// Update is called once per frame
@@ -44,6 +47,8 @@ public class enemyController : MonoBehaviour {
 
         spotLightGO.transform.position = transform.position;
         spotLightGO.transform.rotation = transform.rotation;
+
+        
 
         //getEnemyPosition();
 

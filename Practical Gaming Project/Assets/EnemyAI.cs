@@ -27,7 +27,11 @@ public class EnemyAI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        switch(currentState)
+        enemyToPlayerVector = getEnemytoPlayerVector();
+        enemyToPlayerDistance = getEnemyToPlayerDistance();
+        enemyToPlayerAngle = getAngleToPlayer();
+
+        switch (currentState)
         {
             case State.patrolling:
                 {
@@ -88,19 +92,12 @@ public class EnemyAI : MonoBehaviour {
         {
             transform.position += transform.forward * Time.deltaTime;
 
-            //if (enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45)
-            //{
-            //    Debug.Log("ENEMY SIGHTED!");
-
-            //    currentTransition = Transition.playerSeen;
-            //}
+            if(enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45)
+            {
+                Debug.Log("Enemy Sighted!");
+                currentTransition = Transition.playerSeen;
+            }
         }
-
-        enemyToPlayerVector = getEnemytoPlayerVector();
-
-        enemyToPlayerDistance = getEnemyToPlayerDistance();
-
-        enemyToPlayerAngle = getAngleToPlayer();
     }
 
     Vector3 getEnemytoPlayerVector()
@@ -121,6 +118,6 @@ public class EnemyAI : MonoBehaviour {
     {
         //Debug.Log("Enemy to Player Angle - " + Vector3.Angle(enemyToPlayerVector, transform.forward));
 
-        return Vector3.Angle(enemyToPlayerVector, transform.forward);
+        return Vector3.Angle(getEnemytoPlayerVector(), transform.forward);
     }
 }

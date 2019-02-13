@@ -11,6 +11,7 @@ public class enemyController : MonoBehaviour {
     
     GameObject playerGO;
     GameObject spotLightGO;
+    CharacterControl playerScript;
     
 
 	// Use this for initialization
@@ -18,8 +19,8 @@ public class enemyController : MonoBehaviour {
         playerGO = GameObject.FindGameObjectWithTag("Player");
 
         spotLightGO = GameObject.FindGameObjectWithTag("EnemySpotLight");
-            
-        
+
+        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterControl>();
     }
 	
 	// Update is called once per frame
@@ -58,7 +59,7 @@ public class enemyController : MonoBehaviour {
 
         enemyToPlayerDistance = getEnemyToPlayerDistance();
 
-        getEnemyForward();
+        //getEnemyForward();
 
         enemyToPlayerAngle = getAngleToPlayer();
 
@@ -66,6 +67,14 @@ public class enemyController : MonoBehaviour {
         {
             //enemy sighted
             Debug.Log("ENEMY SIGHTED!");
+        }
+        else if (enemyToPlayerDistance <= 15 && playerScript.currentStance == CharacterControl.stance.standing && playerScript.moving == true)
+        {
+            Debug.Log("SOMETHING HEARD");
+        }
+        else
+        {
+            Debug.Log("ENEMY NOT SIGHTED");
         }
     }
 
@@ -93,7 +102,7 @@ public class enemyController : MonoBehaviour {
 
     double getEnemyToPlayerDistance()
     {
-        Debug.Log("Enemy to Player Distance - " + enemyToPlayerDistance);
+        //Debug.Log("Enemy to Player Distance - " + enemyToPlayerDistance);
 
         return Math.Sqrt((enemyToPlayerVector.x * enemyToPlayerVector.x) + (enemyToPlayerVector.y * enemyToPlayerVector.y) + (enemyToPlayerVector.z * enemyToPlayerVector.z));
     }
@@ -109,7 +118,7 @@ public class enemyController : MonoBehaviour {
 
         //enemyToPlayerAngleInDegrees = enemyToPlayerAngle * 180 / Math.PI;
 
-        Debug.Log("Enemy to Player Angle - " + Vector3.Angle(enemyToPlayerVector, transform.forward));
+        //Debug.Log("Enemy to Player Angle - " + Vector3.Angle(enemyToPlayerVector, transform.forward));
 
         return Vector3.Angle(enemyToPlayerVector, transform.forward);
     }

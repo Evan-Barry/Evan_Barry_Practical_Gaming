@@ -5,10 +5,11 @@ using UnityEngine;
 public class CharacterControl : MonoBehaviour {
 
     public float moveSpeed;
+    public bool moving;
     enum directionFacing {up, left, down, right};
     directionFacing thisDirection = directionFacing.up;
-    enum stance {standing, prone};
-    stance currentStance = stance.standing;
+    public enum stance {standing, prone};
+    public stance currentStance = stance.standing;
 
     Animator anim;
 
@@ -47,6 +48,7 @@ public class CharacterControl : MonoBehaviour {
         else
         {
             anim.SetBool("Moving", false);
+            moving = false;
         }
 
         if(Input.GetKeyDown(KeyCode.LeftShift))
@@ -56,7 +58,6 @@ public class CharacterControl : MonoBehaviour {
 
         Camera.main.transform.position = transform.position + new Vector3(0, 4, -8);
         radarCamera.transform.position = transform.position + new Vector3(0, 15, 0);
-
     }
 
     /// <summary>
@@ -145,6 +146,7 @@ public class CharacterControl : MonoBehaviour {
         //throw new System.NotImplementedException();
         transform.position += speed * transform.forward * Time.deltaTime;
         anim.SetBool("Moving", true);
+        moving = true;
     }
 
     /// <summary>

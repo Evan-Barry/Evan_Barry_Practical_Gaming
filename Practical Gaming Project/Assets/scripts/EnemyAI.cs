@@ -10,6 +10,7 @@ public class EnemyAI : MonoBehaviour {
     double enemyToPlayerAngle;
 
     GameObject playerGO;
+    CharacterControl playerScript;
 
     enum State { patrolling, caution, alert };
     State currentState = State.patrolling;
@@ -17,11 +18,27 @@ public class EnemyAI : MonoBehaviour {
     enum Transition { playerSeen, playerLost, hearSomething, findNothing};
     Transition currentTransition = Transition.findNothing;
 
+    //Following 5 lines of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
+    public Transform startPos;
+    public Transform endPos;
+    public Transform tempPos;
+
+    public float speed = 1.0f;
+
+    private float startTime;
+
+    private float journeyLength;
+
 	// Use this for initialization
 	void Start () {
 
         playerGO = GameObject.FindGameObjectWithTag("Player");
+        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterControl>();
 
+        //Following 2 line of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
+        startTime = Time.time;
+
+        journeyLength = Vector3.Distance(startPos.position, endPos.position);
     }
 	
 	// Update is called once per frame
@@ -90,13 +107,36 @@ public class EnemyAI : MonoBehaviour {
 
         if(currentState == State.patrolling)
         {
-            transform.position += transform.forward * Time.deltaTime;
+            //transform.position += transform.forward * Time.deltaTime;
+
+            patrol();
+
+            if (transform.position == endPos.position)
+            {
+                //swapPoints();
+            }
 
             if(enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45)
             {
                 Debug.Log("Enemy Sighted!");
                 currentTransition = Transition.playerSeen;
             }
+
+            else if((enemyToPlayerDistance > 10 && enemyToPlayerDistance <= 15) && playerScript.currentStance == CharacterControl.stance.standing)
+            {
+                Debug.Log("SOMETHING HEARD");
+                currentTransition = Transition.hearSomething;
+            }
+        }
+
+        else if(currentState == State.alert)
+        {
+            
+        }
+
+        else//state.caution
+        {
+
         }
     }
 
@@ -120,4 +160,23 @@ public class EnemyAI : MonoBehaviour {
 
         return Vector3.Angle(getEnemytoPlayerVector(), transform.forward);
     }
+
+    void patrol()
+    {
+        //Following 3 line of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
+        float distCovered = (Time.time - startTime) * speed;
+
+        float fracJourney = distCovered / journeyLength;
+
+        transform.position = Vector3.Lerp(startPos.position, endPos.position, fracJourney);
+    }
+
+    void swapPoints()
+    {
+        tempPos = startPos;
+        startPos = endPos;
+        endPos = tempPos;
+    }
+
+    
 }

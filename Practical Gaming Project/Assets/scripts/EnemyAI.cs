@@ -9,8 +9,8 @@ public class EnemyAI : MonoBehaviour {
     double enemyToPlayerDistance;
     double enemyToPlayerAngle;
 
-    GameObject playerGO;
-    CharacterControl playerScript;
+    public GameObject playerGO;
+    private CharacterControl playerScript;
 
     enum State { patrolling, caution, alert };
     State currentState = State.patrolling;
@@ -27,18 +27,28 @@ public class EnemyAI : MonoBehaviour {
 
     private float startTime;
 
+    public float waitTime = 1.0f;
+
     private float journeyLength;
 
-	// Use this for initialization
-	void Start () {
+    private bool swapped = false;
+    private bool turned = true;
 
-        playerGO = GameObject.FindGameObjectWithTag("Player");
-        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterControl>();
+    private IEnumerator turnCoroutine;
+    private IEnumerator patrolCoroutine;
 
+    private void Awake()
+    {
+        playerGO = GameObject.Find("playerCube");
+        playerScript = playerGO.GetComponent<CharacterControl>();
+    }
+    // Use this for initialization
+    void Start () {
         //Following 2 line of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
         startTime = Time.time;
 
         journeyLength = Vector3.Distance(startPos.position, endPos.position);
+        
     }
 	
 	// Update is called once per frame
@@ -108,12 +118,18 @@ public class EnemyAI : MonoBehaviour {
         if(currentState == State.patrolling)
         {
             //transform.position += transform.forward * Time.deltaTime;
-
-            patrol();
-
-            if (transform.position == endPos.position)
+            if(transform.position != endPos.position)
             {
-                //swapPoints();
+                patrolCoroutine = patrol(waitTime);
+                StartCoroutine(patrolCoroutine);
+                
+            }
+            else if(transform.position == endPos.position && swapped == false)
+            {
+                //turnToEndPos();
+                turnCoroutine = turnToEndPos(waitTime);
+                StartCoroutine(turnCoroutine);
+                updatePatrol();
             }
 
             if(enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45)
@@ -161,14 +177,15 @@ public class EnemyAI : MonoBehaviour {
         return Vector3.Angle(getEnemytoPlayerVector(), transform.forward);
     }
 
-    void patrol()
+    IEnumerator patrol(float wait)
     {
         //Following 3 line of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
         float distCovered = (Time.time - startTime) * speed;
 
         float fracJourney = distCovered / journeyLength;
-
+        yield return new WaitForSeconds(wait);
         transform.position = Vector3.Lerp(startPos.position, endPos.position, fracJourney);
+        swapped = false;
     }
 
     void swapPoints()
@@ -176,7 +193,40 @@ public class EnemyAI : MonoBehaviour {
         tempPos = startPos;
         startPos = endPos;
         endPos = tempPos;
+        swapped = true;
     }
 
-    
+    void updatePatrol()
+    {
+        //Following 2 line of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
+        startTime = Time.time;
+
+        journeyLength = Vector3.Distance(startPos.position, endPos.position);
+    }
+
+    IEnumerator turnToEndPos(float wait)
+    {
+        if(turned)
+        {
+            turned = false;
+            Debug.Log("Turning");
+            yield return new WaitForSeconds(wait);
+            swapPoints();
+            if (transform.rotation.y == 0)
+            {
+                transform.eulerAngles = new Vector3(transform.rotation.x, 180, transform.rotation.z);
+            }
+            else
+            {
+                transform.eulerAngles = new Vector3(transform.rotation.x, 0, transform.rotation.z);
+            }
+            
+            turned = true;
+            Debug.Log("Turned");
+            waitTime = UnityEngine.Random.Range(0.5f, 2.0f);
+            speed = UnityEngine.Random.Range(0.5f, 1.5f);
+        }
+    }
+
+
 }

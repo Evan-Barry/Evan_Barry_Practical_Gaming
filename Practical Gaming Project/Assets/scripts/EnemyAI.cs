@@ -9,11 +9,16 @@ public class EnemyAI : MonoBehaviour {
     double enemyToPlayerDistance;
     double enemyToPlayerAngle;
 
-    public GameObject playerGO;
-    private CharacterControl playerScript;
+    GameObject playerGO;
+    GameObject GM;
+    GameObject spotlight;
+    CharacterControl playerScript;
+    timer timerScript;
+    Light spot;
 
     enum State { patrolling, caution, alert };
     State currentState = State.patrolling;
+    State previousState;
 
     enum Transition { playerSeen, playerLost, hearSomething, findNothing};
     Transition currentTransition = Transition.findNothing;
@@ -36,19 +41,22 @@ public class EnemyAI : MonoBehaviour {
 
     private IEnumerator turnCoroutine;
     private IEnumerator patrolCoroutine;
-
-    private void Awake()
-    {
-        playerGO = GameObject.Find("playerCube");
-        playerScript = playerGO.GetComponent<CharacterControl>();
-    }
+    
     // Use this for initialization
     void Start () {
         //Following 2 line of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
         startTime = Time.time;
 
         journeyLength = Vector3.Distance(startPos.position, endPos.position);
-        
+
+        playerGO = GameObject.FindGameObjectWithTag("Player");
+        playerScript = playerGO.GetComponent<CharacterControl>();
+
+        GM = GameObject.FindGameObjectWithTag("GM");
+        timerScript = GM.GetComponent<timer>();
+
+        spotlight = GameObject.FindGameObjectWithTag("EnemySpotLight");
+        spot = spotlight.GetComponent<Light>();
     }
 	
 	// Update is called once per frame
@@ -65,10 +73,12 @@ public class EnemyAI : MonoBehaviour {
                     switch(currentTransition)
                     {
                         case Transition.playerSeen:
+                            previousState = State.patrolling;
                             currentState = State.alert;
                             break;
 
                         case Transition.hearSomething:
+                            previousState = State.patrolling;
                             currentState = State.caution;
                             break;
 
@@ -83,6 +93,7 @@ public class EnemyAI : MonoBehaviour {
                     switch(currentTransition)
                     {
                         case Transition.playerLost:
+                            previousState = State.alert;
                             currentState = State.caution;
                             break;
 
@@ -97,10 +108,12 @@ public class EnemyAI : MonoBehaviour {
                     switch(currentTransition)
                     {
                         case Transition.findNothing:
+                            previousState = State.caution;
                             currentState = State.patrolling;
                             break;
 
                         case Transition.playerSeen:
+                            previousState = State.caution;
                             currentState = State.alert;
                             break;
 
@@ -117,7 +130,7 @@ public class EnemyAI : MonoBehaviour {
 
         if(currentState == State.patrolling)
         {
-            //transform.position += transform.forward * Time.deltaTime;
+            //patrolling actions start
             if(transform.position != endPos.position)
             {
                 patrolCoroutine = patrol(waitTime);
@@ -132,26 +145,84 @@ public class EnemyAI : MonoBehaviour {
                 updatePatrol();
             }
 
+            spot.range = 10;
+            spot.spotAngle = 90;
+            //patrolling actions end
+
+            //patrolling transition start
             if(enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45)
             {
                 Debug.Log("Enemy Sighted!");
                 currentTransition = Transition.playerSeen;
+                playerScript.seen = true;
             }
 
             else if((enemyToPlayerDistance > 10 && enemyToPlayerDistance <= 15) && playerScript.currentStance == CharacterControl.stance.standing)
             {
                 Debug.Log("SOMETHING HEARD");
                 currentTransition = Transition.hearSomething;
+                playerScript.seen = false;
             }
+            //patrolling transition end
         }
 
         else if(currentState == State.alert)
         {
-            
+            //alert transition start
+            //playerLost if player is not seen by ANY enemy for 10 seconds
+            if(!playerScript.seen)
+            {
+                timerScript.timerRunning = true;
+                timerScript.alertCountdown();
+            }
+
+            if (enemyToPlayerDistance > 10 || enemyToPlayerAngle > 45)
+            {
+                playerScript.seen = false;
+            }
+
+            else
+            {
+                playerScript.seen = true;
+                timerScript.timerRunning = false;
+                currentTransition = Transition.playerSeen;
+            }
+
+            if(timerScript.alertTime <= 0f)
+            {
+                currentTransition = Transition.playerLost;
+            }
+            //transition complete
+
+            //alert actions start
         }
 
         else//state.caution
         {
+            //caution transition start
+            if (enemyToPlayerDistance <= 15 && enemyToPlayerAngle <= 67.5)
+            {
+                Debug.Log("Enemy Sighted!");
+                currentTransition = Transition.playerSeen;
+                playerScript.seen = true;
+            }
+
+            if (!playerScript.seen)
+            {
+                timerScript.timerRunning = true;
+                timerScript.cautionCountdown();
+            }
+
+            if (timerScript.cautionTime <= 0f)
+            {
+                currentTransition = Transition.findNothing;
+            }
+            //caution transition end
+
+            //caution actions start
+            spot.range = 15;
+            spot.spotAngle = 135;
+
 
         }
     }

@@ -181,7 +181,7 @@ public class EnemyAI : MonoBehaviour {
                 playerScript.seen = false;
             }
 
-            else
+            if(enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45)
             {
                 playerScript.seen = true;
                 timerScript.timerRunning = false;
@@ -195,25 +195,37 @@ public class EnemyAI : MonoBehaviour {
             //transition complete
 
             //alert actions start
+            spot.range = 10f;
+            spot.spotAngle = 90f;
+
+            transform.LookAt(new Vector3(playerGO.transform.position.x, playerGO.transform.position.y+0.5f, playerGO.transform.position.z));
+            
+            //chase(playerGO.transform);
         }
 
         else//state.caution
         {
             //caution transition start
-            if (enemyToPlayerDistance <= 15 && enemyToPlayerAngle <= 67.5)
-            {
-                Debug.Log("Enemy Sighted!");
-                currentTransition = Transition.playerSeen;
-                playerScript.seen = true;
-            }
-
-            if (!playerScript.seen)
+        
+            if(!playerScript.seen)
             {
                 timerScript.timerRunning = true;
                 timerScript.cautionCountdown();
             }
 
-            if (timerScript.cautionTime <= 0f)
+            if(enemyToPlayerDistance > 15 || enemyToPlayerAngle > 67.5)
+            {
+                playerScript.seen = false;
+            }
+
+            if(enemyToPlayerDistance <= 15 && enemyToPlayerAngle <= 67.5)
+            {
+                playerScript.seen = true;
+                timerScript.timerRunning = false;
+                currentTransition = Transition.playerSeen;
+            }
+
+            if(timerScript.cautionTime <= 0f)
             {
                 currentTransition = Transition.findNothing;
             }
@@ -222,7 +234,6 @@ public class EnemyAI : MonoBehaviour {
             //caution actions start
             spot.range = 15;
             spot.spotAngle = 135;
-
 
         }
     }
@@ -273,6 +284,14 @@ public class EnemyAI : MonoBehaviour {
         startTime = Time.time;
 
         journeyLength = Vector3.Distance(startPos.position, endPos.position);
+    }
+
+    void chase(Transform playerPos)
+    {
+        float distCovered = (Time.time - startTime) * speed;
+
+        float fracJourney = distCovered / journeyLength;
+        transform.position = Vector3.Lerp(transform.position, playerPos.position, fracJourney);
     }
 
     IEnumerator turnToEndPos(float wait)

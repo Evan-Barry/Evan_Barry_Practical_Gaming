@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour {
 
@@ -24,9 +25,9 @@ public class EnemyAI : MonoBehaviour {
     Transition currentTransition = Transition.findNothing;
 
     //Following 5 lines of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
-    public Transform startPos;
-    public Transform endPos;
-    public Transform tempPos;
+    private Vector3 startPos;
+    private Vector3 endPos;
+    private Vector3 tempPos;
 
     public float speed = 1.0f;
 
@@ -41,13 +42,19 @@ public class EnemyAI : MonoBehaviour {
 
     private IEnumerator turnCoroutine;
     private IEnumerator patrolCoroutine;
+
+    //public NavMeshAgent agent;
     
     // Use this for initialization
     void Start () {
+
+        startPos = transform.position;
+        endPos = new Vector3(startPos.x, startPos.y, startPos.z + 5);
+
         //Following 2 line of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
         startTime = Time.time;
 
-        journeyLength = Vector3.Distance(startPos.position, endPos.position);
+        journeyLength = Vector3.Distance(startPos, endPos);
 
         playerGO = GameObject.FindGameObjectWithTag("Player");
         playerScript = playerGO.GetComponent<CharacterControl>();
@@ -131,13 +138,13 @@ public class EnemyAI : MonoBehaviour {
         if(currentState == State.patrolling)
         {
             //patrolling actions start
-            if(transform.position != endPos.position)
+            if(transform.position != endPos)
             {
                 patrolCoroutine = patrol(waitTime);
                 StartCoroutine(patrolCoroutine);
                 
             }
-            else if(transform.position == endPos.position && swapped == false)
+            else if(transform.position == endPos && swapped == false)
             {
                 //turnToEndPos();
                 turnCoroutine = turnToEndPos(waitTime);
@@ -199,7 +206,9 @@ public class EnemyAI : MonoBehaviour {
             spot.spotAngle = 90f;
 
             transform.LookAt(new Vector3(playerGO.transform.position.x, playerGO.transform.position.y+0.5f, playerGO.transform.position.z));
-            
+
+            //agent.SetDestination(playerGO.transform.position);
+
             //chase(playerGO.transform);
         }
 
@@ -266,7 +275,7 @@ public class EnemyAI : MonoBehaviour {
 
         float fracJourney = distCovered / journeyLength;
         yield return new WaitForSeconds(wait);
-        transform.position = Vector3.Lerp(startPos.position, endPos.position, fracJourney);
+        transform.position = Vector3.Lerp(startPos, endPos, fracJourney);
         swapped = false;
     }
 
@@ -283,7 +292,7 @@ public class EnemyAI : MonoBehaviour {
         //Following 2 line of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
         startTime = Time.time;
 
-        journeyLength = Vector3.Distance(startPos.position, endPos.position);
+        journeyLength = Vector3.Distance(startPos, endPos);
     }
 
     void chase(Transform playerPos)

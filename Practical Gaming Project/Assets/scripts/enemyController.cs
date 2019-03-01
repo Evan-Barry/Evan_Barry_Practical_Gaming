@@ -26,40 +26,12 @@ public class enemyController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        //if (Input.GetKey(KeyCode.W))
-        //{
-        //    transform.position += transform.forward * Time.deltaTime;
-        //}
-
-        //if (Input.GetKey(KeyCode.S))
-        //{
-        //    transform.position -= transform.forward * Time.deltaTime;
-        //}
-
-        //if (Input.GetKey(KeyCode.A))
-        //{
-        //    transform.Rotate(Vector3.up * -40 * Time.deltaTime);
-        //}
-
-        //if (Input.GetKey(KeyCode.D))
-        //{
-        //    transform.Rotate(Vector3.up * 40 * Time.deltaTime);
-        //}
-
         spotLightGO.transform.position = transform.position;
         spotLightGO.transform.rotation = transform.rotation;
-
-        
-
-        //getEnemyPosition();
-
-        //getPlayerPosition();
 
         enemyToPlayerVector = getEnemytoPlayerVector();
 
         enemyToPlayerDistance = getEnemyToPlayerDistance();
-
-        //getEnemyForward();
 
         enemyToPlayerAngle = getAngleToPlayer();
 
@@ -109,17 +81,6 @@ public class enemyController : MonoBehaviour {
 
     double getAngleToPlayer()
     {
-        //enemyToPlayerVector(dotProduct) / (enemyVectorLength * playerVectorLength) = COS θ
-
-        //enemyVectorLength = Math.Sqrt((transform.position.x * transform.position.x) + (transform.position.y * transform.position.x) + (transform.position.z * transform.position.x));
-        //playerVectorLength = Math.Sqrt((playerGO.transform.position.x * playerGO.transform.position.x) + (playerGO.transform.position.y * playerGO.transform.position.x) + (playerGO.transform.position.z * playerGO.transform.position.x));
-
-        //enemyToPlayerAngle = Math.Acos(getVectorDotProduct() / (enemyVectorLength * playerVectorLength));
-
-        //enemyToPlayerAngleInDegrees = enemyToPlayerAngle * 180 / Math.PI;
-
-        //Debug.Log("Enemy to Player Angle - " + Vector3.Angle(enemyToPlayerVector, transform.forward));
-
         return Vector3.Angle(enemyToPlayerVector, transform.forward);
     }
 }

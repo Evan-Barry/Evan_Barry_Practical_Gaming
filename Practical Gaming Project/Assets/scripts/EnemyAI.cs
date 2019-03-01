@@ -25,8 +25,8 @@ public class EnemyAI : MonoBehaviour {
     Transition currentTransition = Transition.findNothing;
 
     //Following 5 lines of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
-    private Vector3 startPos;
-    private Vector3 endPos;
+    public Vector3 startPos;
+    public Vector3 endPos;
     private Vector3 tempPos;
 
     public float speed = 1.0f;
@@ -49,7 +49,8 @@ public class EnemyAI : MonoBehaviour {
     void Start () {
 
         startPos = transform.position;
-        endPos = new Vector3(startPos.x, startPos.y, startPos.z + 5);
+        //endPos = new Vector3(startPos.x, startPos.y, startPos.z + 5);
+        endPos = startPos + (transform.forward * 5);
 
         //Following 2 line of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
         startTime = Time.time;
@@ -176,11 +177,16 @@ public class EnemyAI : MonoBehaviour {
         else if(currentState == State.alert)
         {
             //alert transition start
-            //playerLost if player is not seen by ANY enemy for 10 seconds
+            //playerLost if player is not seen by enemy for 10 seconds
             if(!playerScript.seen)
             {
                 timerScript.timerRunning = true;
                 timerScript.alertCountdown();
+            }
+
+            else
+            {
+                transform.LookAt(new Vector3(playerGO.transform.position.x, playerGO.transform.position.y + 0.5f, playerGO.transform.position.z));
             }
 
             if (enemyToPlayerDistance > 10 || enemyToPlayerAngle > 45)
@@ -205,7 +211,7 @@ public class EnemyAI : MonoBehaviour {
             spot.range = 10f;
             spot.spotAngle = 90f;
 
-            transform.LookAt(new Vector3(playerGO.transform.position.x, playerGO.transform.position.y+0.5f, playerGO.transform.position.z));
+            
 
             //agent.SetDestination(playerGO.transform.position);
 
@@ -311,15 +317,9 @@ public class EnemyAI : MonoBehaviour {
             Debug.Log("Turning");
             yield return new WaitForSeconds(wait);
             swapPoints();
-            if (transform.rotation.y == 0)
-            {
-                transform.eulerAngles = new Vector3(transform.rotation.x, 180, transform.rotation.z);
-            }
-            else
-            {
-                transform.eulerAngles = new Vector3(transform.rotation.x, 0, transform.rotation.z);
-            }
-            
+
+            transform.rotation *= Quaternion.Euler(0f, 180f, 0f);
+
             turned = true;
             Debug.Log("Turned");
             waitTime = UnityEngine.Random.Range(0.5f, 2.0f);

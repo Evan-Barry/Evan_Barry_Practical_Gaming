@@ -281,6 +281,7 @@ public class EnemyAI : MonoBehaviour {
 
         float fracJourney = distCovered / journeyLength;
         yield return new WaitForSeconds(wait);
+        transform.LookAt(endPos);
         transform.position = Vector3.Lerp(startPos, endPos, fracJourney);
         swapped = false;
     }

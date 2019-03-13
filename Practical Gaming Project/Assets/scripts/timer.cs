@@ -19,8 +19,8 @@ public class timer : MonoBehaviour {
 	    
         if(!timerRunning)
         {
-            alertTime = 10f;
-            cautionTime = 20f;
+            alertTime = 1f;
+            cautionTime = 2f;
         }
 
         if(alertTime <= 0)

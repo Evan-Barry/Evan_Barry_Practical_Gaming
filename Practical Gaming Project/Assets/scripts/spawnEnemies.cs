@@ -14,13 +14,13 @@ public class spawnEnemies : MonoBehaviour {
 
         Debug.Log("Plane size - " + rend.bounds.size);
         
-        Instantiate(enemy, new Vector3(23, 0.5f, 23), Quaternion.Euler(new Vector3(0,-90,0)));
+        //Instantiate(enemy, new Vector3(23, 0.5f, 23), Quaternion.Euler(new Vector3(0,-90,0)));
 
         Instantiate(enemy, new Vector3(23, 0.5f, -23), transform.rotation);
         
-        Instantiate(enemy, new Vector3(-23, 0.5f, 23), Quaternion.Euler(new Vector3(0, 180, 0)));
+        //Instantiate(enemy, new Vector3(-23, 0.5f, 23), Quaternion.Euler(new Vector3(0, 180, 0)));
 
-        Instantiate(enemy, new Vector3(-23, 0.5f, -23), Quaternion.Euler(new Vector3(0, 90, 0)));
+        //Instantiate(enemy, new Vector3(-23, 0.5f, -23), Quaternion.Euler(new Vector3(0, 90, 0)));
     }
 	
 	// Update is called once per frame

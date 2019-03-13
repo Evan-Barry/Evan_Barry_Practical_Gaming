@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item {
+public class Item{
 
     private string name;
     private string type;

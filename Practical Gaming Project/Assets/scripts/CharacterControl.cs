@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CharacterControl : MonoBehaviour {
 
-    public float moveSpeed;
+    private float moveSpeed = 2;
     public bool moving;
     public bool seen;
     enum directionFacing {up, left, down, right};
@@ -16,11 +16,13 @@ public class CharacterControl : MonoBehaviour {
 
     public Camera radarCamera;
 
+    private Rigidbody rb;
+
     // Use this for initialization
     void Start () {
 		
         anim = GetComponent<Animator>();
-
+        rb = GetComponent<Rigidbody>();
 	}
 	
 	// Update is called once per frame
@@ -146,6 +148,7 @@ public class CharacterControl : MonoBehaviour {
     {
         //throw new System.NotImplementedException();
         transform.position += speed * transform.forward * Time.deltaTime;
+        //rb.AddForce(transform.forward * speed * Time.deltaTime);
         anim.SetBool("Moving", true);
         moving = true;
     }

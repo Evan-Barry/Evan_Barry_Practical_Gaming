@@ -27,6 +27,7 @@ public class EnemyAI : MonoBehaviour {
     //Following 5 lines of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
     public Vector3 startPos;
     public Vector3 endPos;
+	public float patrolDistance = 1;
     private Vector3 tempPos;
 
     public float speed = 1.0f;
@@ -50,7 +51,7 @@ public class EnemyAI : MonoBehaviour {
 
         startPos = transform.position;
         //endPos = new Vector3(startPos.x, startPos.y, startPos.z + 5);
-        endPos = startPos + (transform.forward * 5);
+		endPos = startPos + (transform.forward * patrolDistance);
 
         //Following 2 line of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
         startTime = Time.time;

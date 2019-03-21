@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.4964127, b: 0.57481724, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -121,6 +121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 75149393}
   - component: {fileID: 75149392}
+  - component: {fileID: 75149394}
   m_Layer: 0
   m_Name: GM
   m_TagString: Untagged
@@ -153,6 +154,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &75149394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 75149391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d62f59d466f31439d79db39b4ff230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 1102997860793880, guid: df8e6142b1017a441ae50350b6f7dc21, type: 2}
 --- !u!1 &1028126626
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,15 +240,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400088, guid: 3b059b06d05c0e04ba42674f84feac25, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -33.003918
+      value: -31.15
       objectReference: {fileID: 0}
     - target: {fileID: 400088, guid: 3b059b06d05c0e04ba42674f84feac25, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.064887e-18
+      value: -0.005
       objectReference: {fileID: 0}
     - target: {fileID: 400088, guid: 3b059b06d05c0e04ba42674f84feac25, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.771897
+      value: 10.77
       objectReference: {fileID: 0}
     - target: {fileID: 400088, guid: 3b059b06d05c0e04ba42674f84feac25, type: 3}
       propertyPath: m_LocalRotation.x
@@ -268,6 +281,10 @@ Prefab:
     - target: {fileID: 400088, guid: 3b059b06d05c0e04ba42674f84feac25, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100088, guid: 3b059b06d05c0e04ba42674f84feac25, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3b059b06d05c0e04ba42674f84feac25, type: 3}
@@ -316,8 +333,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.55, y: 1.01, z: 1}
-  m_Center: {x: 0, y: 0.53, z: 0}
+  m_Size: {x: 0.55, y: 1.0299878, z: 1}
+  m_Center: {x: 0, y: 0.52000606, z: 0}
 --- !u!1 &1880540279
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,7 +383,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 3.1
+  near clip plane: 3.45
   far clip plane: 1000
   field of view: 40
   orthographic: 0

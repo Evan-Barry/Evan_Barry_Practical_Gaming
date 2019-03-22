@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TestInventory : MonoBehaviour {
 
-    Inventory myInventory;
+    public Inventory myInventory;
 
     Keycard a, b;
     Grenade c, d;

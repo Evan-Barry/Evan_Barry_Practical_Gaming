@@ -200,4 +200,12 @@ public class CharacterControl : MonoBehaviour {
             currentStance = stance.standing;
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.CompareTag("keycard"))
+        {
+            Destroy(other.gameObject);
+        }
+    }
 }

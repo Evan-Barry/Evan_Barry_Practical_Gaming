@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.4964127, b: 0.57481724, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -122,9 +122,11 @@ GameObject:
   - component: {fileID: 75149393}
   - component: {fileID: 75149392}
   - component: {fileID: 75149394}
+  - component: {fileID: 75149395}
+  - component: {fileID: 75149396}
   m_Layer: 0
   m_Name: GM
-  m_TagString: Untagged
+  m_TagString: GM
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,7 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11c46c57df3512d49a28e40845732ff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  map: {fileID: 1296866698852540, guid: d74040dec6678974bafb023185c21dad, type: 2}
+  map: {fileID: 1788363474091616, guid: d74040dec6678974bafb023185c21dad, type: 2}
 --- !u!4 &75149393
 Transform:
   m_ObjectHideFlags: 0
@@ -166,6 +168,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 1102997860793880, guid: df8e6142b1017a441ae50350b6f7dc21, type: 2}
+--- !u!114 &75149395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 75149391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 858c5a6344e55e04194ce48e97e92470, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keycard: {fileID: 1862776734270144, guid: d4dbcf7c16c7226458dd68b09a1aa494, type: 2}
+  spotlight: {fileID: 1575064353219018, guid: 1fa03fc1cb7c9304f992e56754b2ee42, type: 2}
+--- !u!114 &75149396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 75149391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c81800e56303e439489b3abf9c3818, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myInventory: {fileID: 0}
 --- !u!1 &1028126626
 GameObject:
   m_ObjectHideFlags: 0

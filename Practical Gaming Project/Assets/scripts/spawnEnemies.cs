@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class spawnEnemies : MonoBehaviour {
     
-    Renderer rend;
     public GameObject enemy;
 	GameObject enemy1, enemy2, enemy3, enemy4, enemy5, enemy6;
 	EnemyAI enemy1Script, enemy2Script, enemy3Script, enemy4Script, enemy5Script, enemy6Script;

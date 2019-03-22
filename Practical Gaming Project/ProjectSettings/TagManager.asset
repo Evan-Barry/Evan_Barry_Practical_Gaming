@@ -9,6 +9,7 @@ TagManager:
   - GM
   - world
   - floor
+  - keycard
   layers:
   - Default
   - TransparentFX

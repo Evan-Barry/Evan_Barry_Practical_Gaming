@@ -12,7 +12,7 @@ public class EnemyAI : MonoBehaviour {
 
     GameObject playerGO;
     GameObject GM;
-    GameObject spotlight;
+    public GameObject spotlight;
     CharacterControl playerScript;
     timer timerScript;
     Light spot;

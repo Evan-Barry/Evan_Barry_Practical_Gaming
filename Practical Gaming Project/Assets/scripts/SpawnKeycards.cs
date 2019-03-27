@@ -9,8 +9,8 @@ public class SpawnKeycards : MonoBehaviour {
     GameObject kc1, kc2, kc3, kc4;
     GameObject sl1, sl2, sl3, sl4;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 
         kc1 = Instantiate(keycard, new Vector3(-40, 1, 6.5f), transform.rotation);
         kc2 = Instantiate(keycard, new Vector3(-34, 1, -3), transform.rotation);
@@ -29,7 +29,7 @@ public class SpawnKeycards : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+        
         kc1.transform.Rotate(0, 1, 0);
         kc2.transform.Rotate(0, 1, 0);
         kc3.transform.Rotate(0, 1, 0);

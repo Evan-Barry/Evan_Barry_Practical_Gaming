@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class timer : MonoBehaviour {
 
-    public float alertTime = 10f;
+    public float alertTime;
     public bool timerRunning = false;
-    public float cautionTime = 20f;
+    public float cautionTime;
 
 	// Use this for initialization
 	void Start () {
@@ -19,8 +19,8 @@ public class timer : MonoBehaviour {
 	    
         if(!timerRunning)
         {
-            alertTime = 1f;
-            cautionTime = 2f;
+            alertTime = 2f;
+            cautionTime = 4f;
         }
 
         if(alertTime <= 0)

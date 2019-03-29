@@ -173,9 +173,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16c9d6e5af88dc49a437dfa66f4fa56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPos: {fileID: 0}
-  endPos: {fileID: 0}
-  tempPos: {fileID: 0}
+  playerGO: {fileID: 0}
+  GM: {fileID: 0}
+  spotlight: {fileID: 0}
+  startPos: {x: 0, y: 0, z: 0}
+  endPos: {x: 0, y: 0, z: 0}
+  patrolDistance: 1
   speed: 1
   waitTime: 1
-  agent: {fileID: 0}

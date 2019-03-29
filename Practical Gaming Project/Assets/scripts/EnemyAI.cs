@@ -10,8 +10,8 @@ public class EnemyAI : MonoBehaviour {
     double enemyToPlayerDistance;
     double enemyToPlayerAngle;
 
-    GameObject playerGO;
-    GameObject GM;
+    public GameObject playerGO;
+    public GameObject GM;
     public GameObject spotlight;
     CharacterControl playerScript;
     timer timerScript;
@@ -64,16 +64,18 @@ public class EnemyAI : MonoBehaviour {
         GM = GameObject.FindGameObjectWithTag("GM");
         timerScript = GM.GetComponent<timer>();
 
-        spotlight = GameObject.FindGameObjectWithTag("EnemySpotLight");
+        spotlight = transform.GetChild(0).gameObject;
         spot = spotlight.GetComponent<Light>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
 
         enemyToPlayerVector = getEnemytoPlayerVector();
         enemyToPlayerDistance = getEnemyToPlayerDistance();
         enemyToPlayerAngle = getAngleToPlayer();
+
+        Debug.DrawRay(transform.position, enemyToPlayerVector, Color.red);
 
         switch (currentState)
         {
@@ -154,16 +156,26 @@ public class EnemyAI : MonoBehaviour {
                 updatePatrol();
             }
 
-            spot.range = 10;
-            spot.spotAngle = 90;
+            if(spot != null)
+            {
+                spot.range = 10;
+                spot.spotAngle = 90;
+            }
+
             //patrolling actions end
 
             //patrolling transition start
-            if(enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45)
+            if (enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45)
             {
-                Debug.Log("Enemy Sighted!");
-                currentTransition = Transition.playerSeen;
-                playerScript.seen = true;
+                Debug.Log("Player in enemy scope, obstructed");
+
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 10f) && hit.transform.CompareTag("Player"))
+                {
+                    Debug.Log("Enemy Sighted!");
+                    currentTransition = Transition.playerSeen;
+                    playerScript.seen = true;
+                }
             }
 
             else if((enemyToPlayerDistance > 10 && enemyToPlayerDistance <= 15) && playerScript.currentStance == CharacterControl.stance.standing)
@@ -173,6 +185,8 @@ public class EnemyAI : MonoBehaviour {
                 playerScript.seen = false;
             }
             //patrolling transition end
+
+            Debug.Log("End of patrolling");
         }
 
         else if(currentState == State.alert)
@@ -192,14 +206,28 @@ public class EnemyAI : MonoBehaviour {
 
             if (enemyToPlayerDistance > 10 || enemyToPlayerAngle > 45)
             {
-                playerScript.seen = false;
-            }
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 10f) && !hit.transform.CompareTag("Player"))
+                {
+                    playerScript.seen = false;
+                }
+            }         
 
-            if(enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45)
+            if (enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45)
             {
-                playerScript.seen = true;
-                timerScript.timerRunning = false;
-                currentTransition = Transition.playerSeen;
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 10f) && hit.transform.CompareTag("Player"))
+                {
+                    playerScript.seen = true;
+                    timerScript.timerRunning = false;
+                    currentTransition = Transition.playerSeen;
+                }
+
+                else
+                {
+                    playerScript.seen = false;
+                    timerScript.timerRunning = true;
+                }
             }
 
             if(timerScript.alertTime <= 0f)
@@ -209,11 +237,11 @@ public class EnemyAI : MonoBehaviour {
             //transition complete
 
             //alert actions start
-            spot.range = 10f;
-            spot.spotAngle = 90f;
-
-            
-
+            if(spot != null)
+            {
+                spot.range = 10f;
+                spot.spotAngle = 90f;
+            }
             //agent.SetDestination(playerGO.transform.position);
 
             //chase(playerGO.transform);
@@ -231,14 +259,28 @@ public class EnemyAI : MonoBehaviour {
 
             if(enemyToPlayerDistance > 15 || enemyToPlayerAngle > 67.5)
             {
-                playerScript.seen = false;
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 10f) && !hit.transform.CompareTag("Player"))
+                {
+                    playerScript.seen = false;
+                }
             }
 
             if(enemyToPlayerDistance <= 15 && enemyToPlayerAngle <= 67.5)
             {
-                playerScript.seen = true;
-                timerScript.timerRunning = false;
-                currentTransition = Transition.playerSeen;
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 15f) && hit.transform.CompareTag("Player"))
+                {
+                    playerScript.seen = true;
+                    timerScript.timerRunning = false;
+                    currentTransition = Transition.playerSeen;
+                }
+
+                else
+                {
+                    playerScript.seen = false;
+                    timerScript.timerRunning = true;
+                }
             }
 
             if(timerScript.cautionTime <= 0f)
@@ -248,9 +290,12 @@ public class EnemyAI : MonoBehaviour {
             //caution transition end
 
             //caution actions start
-            spot.range = 15;
-            spot.spotAngle = 135;
-
+            if(spot != null)
+            {
+                spot.range = 15;
+                spot.spotAngle = 135;
+            }
+            
         }
     }
 

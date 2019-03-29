@@ -6,6 +6,7 @@ public class LightingChange : MonoBehaviour
 {
 
     public List<Light> Lights;
+    
 
     void OnPreRender()
     {

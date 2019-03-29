@@ -206,9 +206,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16ed35527f0a4ff40a2e516073e4fbe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alertTime: 10
+  alertTime: 0
   timerRunning: 0
-  cautionTime: 20
+  cautionTime: 0
 --- !u!114 &75149398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -705,7 +705,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Lights:
-  - {fileID: 1028126627}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &1880540279
 GameObject:
   m_ObjectHideFlags: 0

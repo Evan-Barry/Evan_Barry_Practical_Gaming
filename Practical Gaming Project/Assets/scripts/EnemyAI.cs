@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using UnityEngine.AI;
+using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour {
 
@@ -66,6 +66,8 @@ public class EnemyAI : MonoBehaviour {
 
         spotlight = transform.GetChild(0).gameObject;
         spot = spotlight.GetComponent<Light>();
+
+        //agent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
@@ -178,7 +180,7 @@ public class EnemyAI : MonoBehaviour {
                 }
             }
 
-            else if((enemyToPlayerDistance > 10 && enemyToPlayerDistance <= 15) && playerScript.currentStance == CharacterControl.stance.standing)
+            else if((enemyToPlayerDistance > 10 && enemyToPlayerDistance <= 15) && playerScript.currentStance == CharacterControl.stance.standing && playerScript.moving == true)
             {
                 Debug.Log("SOMETHING HEARD");
                 currentTransition = Transition.hearSomething;
@@ -186,7 +188,7 @@ public class EnemyAI : MonoBehaviour {
             }
             //patrolling transition end
 
-            Debug.Log("End of patrolling");
+            //Debug.Log("End of patrolling");
         }
 
         else if(currentState == State.alert)
@@ -201,16 +203,17 @@ public class EnemyAI : MonoBehaviour {
 
             else
             {
-                transform.LookAt(new Vector3(playerGO.transform.position.x, playerGO.transform.position.y + 0.5f, playerGO.transform.position.z));
+                transform.LookAt(new Vector3(playerGO.transform.position.x, playerGO.transform.position.y, playerGO.transform.position.z));
+                //agent.destination = playerGO.transform.position;
             }
 
             if (enemyToPlayerDistance > 10 || enemyToPlayerAngle > 45)
             {
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 10f) && !hit.transform.CompareTag("Player"))
-                {
+                //RaycastHit hit;
+                //if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 10f) && !hit.transform.CompareTag("Player"))
+                //{
                     playerScript.seen = false;
-                }
+                //}
             }         
 
             if (enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45)
@@ -259,11 +262,11 @@ public class EnemyAI : MonoBehaviour {
 
             if(enemyToPlayerDistance > 15 || enemyToPlayerAngle > 67.5)
             {
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 10f) && !hit.transform.CompareTag("Player"))
-                {
+                //RaycastHit hit;
+                //if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 10f) && !hit.transform.CompareTag("Player"))
+                //{
                     playerScript.seen = false;
-                }
+                //}
             }
 
             if(enemyToPlayerDistance <= 15 && enemyToPlayerAngle <= 67.5)

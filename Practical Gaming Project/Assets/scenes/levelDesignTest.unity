@@ -122,10 +122,10 @@ GameObject:
   - component: {fileID: 75149393}
   - component: {fileID: 75149392}
   - component: {fileID: 75149394}
-  - component: {fileID: 75149395}
   - component: {fileID: 75149396}
   - component: {fileID: 75149397}
   - component: {fileID: 75149398}
+  - component: {fileID: 75149395}
   m_Layer: 0
   m_Name: GM
   m_TagString: GM
@@ -178,11 +178,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 75149391}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 858c5a6344e55e04194ce48e97e92470, type: 3}
+  m_Script: {fileID: 11500000, guid: fd62a132857b0a048b532027ac34f949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   keycard: {fileID: 1862776734270144, guid: d4dbcf7c16c7226458dd68b09a1aa494, type: 2}
   spotlight: {fileID: 1575064353219018, guid: 1fa03fc1cb7c9304f992e56754b2ee42, type: 2}
+  grenade: {fileID: 1116101114863644, guid: 0caab7c087c38ec4cbfc7a1051299d2a, type: 2}
 --- !u!114 &75149396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -585,6 +586,7 @@ MonoBehaviour:
   seen: 0
   currentStance: 0
   radarCamera: {fileID: 1740159756}
+  GM: {fileID: 0}
 --- !u!54 &1688714769
 Rigidbody:
   m_ObjectHideFlags: 0

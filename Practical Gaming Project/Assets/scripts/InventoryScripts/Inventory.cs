@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour {
 
-    List<Item> Items;
+    public List<Item> Items;
 
 	// Use this for initialization
 	void Start () {

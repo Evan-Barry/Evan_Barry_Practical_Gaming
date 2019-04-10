@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,13 +17,17 @@ public class CharacterControl : MonoBehaviour {
 
     public Camera radarCamera;
 
-    private Rigidbody rb;
+    public GameObject GM;
+    TestInventory ti;
+
 
     // Use this for initialization
     void Start () {
 		
         anim = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
+
+        GM = GameObject.FindGameObjectWithTag("GM");
+        ti = GM.GetComponent<TestInventory>();
     }
 	
 	// Update is called once per frame
@@ -57,6 +62,11 @@ public class CharacterControl : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.LeftShift))
         {
             changeStance(currentStance);
+        }
+
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            printInventory();
         }
 
         Camera.main.transform.position = transform.position + new Vector3(0, 4, -8);
@@ -201,10 +211,59 @@ public class CharacterControl : MonoBehaviour {
         }
     }
 
+    private void printInventory()
+    {
+        foreach(Item i in ti.myInventory.Items)
+        {
+            Debug.Log(i.getName());
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("keycard"))
+        if(other.gameObject.name.Equals("Keycard1"))
         {
+            ti.myInventory.addTo(ti.k1);
+            Debug.Log("You picked up Keycard 1");
+
+            //show text above where item was displaying the item name
+            
+
+            Destroy(other.gameObject);
+        }
+
+        else if(other.gameObject.name.Equals("Keycard2"))
+        {
+            ti.myInventory.addTo(ti.k2);
+            Debug.Log("You picked up Keycard 2");
+            Destroy(other.gameObject);
+        }
+
+        else if (other.gameObject.name.Equals("Keycard3"))
+        {
+            ti.myInventory.addTo(ti.k3);
+            Debug.Log("You picked up Keycard 3");
+            Destroy(other.gameObject);
+        }
+
+        else if (other.gameObject.name.Equals("Keycard4"))
+        {
+            ti.myInventory.addTo(ti.k4);
+            Debug.Log("You picked up Keycard 4");
+            Destroy(other.gameObject);
+        }
+
+        else if (other.gameObject.name.Equals("grenade1"))
+        {
+            ti.myInventory.addTo(ti.g1);
+            Debug.Log("You picked up a Stun Grenade");
+            Destroy(other.gameObject);
+        }
+
+        else if (other.gameObject.name.Equals("grenade2"))
+        {
+            ti.myInventory.addTo(ti.g2);
+            Debug.Log("You picked up a Stun Grenade");
             Destroy(other.gameObject);
         }
     }

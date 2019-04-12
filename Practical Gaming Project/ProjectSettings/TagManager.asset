@@ -9,6 +9,7 @@ TagManager:
   - GM
   - world
   - floor
+  - pickup
   - keycard
   layers:
   - Default

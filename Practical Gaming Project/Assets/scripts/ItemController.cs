@@ -36,25 +36,25 @@ public class ItemController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         
-        if(kc1 != null)
-        {
-            kc1.transform.Rotate(0, 1, 0);
-        }
+        //if(kc1 != null)
+        //{
+        //    kc1.transform.Rotate(0, 1, 0);
+        //}
         
-        if(kc2 != null)
-        {
-            kc2.transform.Rotate(0, 1, 0);
-        }
+        //if(kc2 != null)
+        //{
+        //    kc2.transform.Rotate(0, 1, 0);
+        //}
         
-        if(kc3 != null)
-        {
-            kc3.transform.Rotate(0, 1, 0);
-        }
+        //if(kc3 != null)
+        //{
+        //    kc3.transform.Rotate(0, 1, 0);
+        //}
         
-        if(kc4 != null)
-        {
-            kc4.transform.Rotate(0, 1, 0);
-        }
+        //if(kc4 != null)
+        //{
+        //    kc4.transform.Rotate(0, 1, 0);
+        //}
     }
 
     

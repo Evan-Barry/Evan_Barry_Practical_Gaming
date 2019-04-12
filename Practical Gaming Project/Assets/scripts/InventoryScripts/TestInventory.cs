@@ -27,4 +27,43 @@ public class TestInventory : MonoBehaviour {
 	void Update () {
 
     }
+
+    public void add(GameObject gameObject)
+    {
+        if (gameObject.name == "Keycard1")
+        {
+            myInventory.addTo(k1);
+            //Debug.Log("k1 added");
+        }
+
+        else if(gameObject.name == "Keycard2")
+        {
+            myInventory.addTo(k2);
+            //Debug.Log("k2 added");
+        }
+
+        else if (gameObject.name == "Keycard3")
+        {
+            myInventory.addTo(k3);
+            //Debug.Log("k3 added");
+        }
+
+        else if (gameObject.name == "Keycard4")
+        {
+            myInventory.addTo(k4);
+            //Debug.Log("k4 added");
+        }
+
+        else if (gameObject.name == "Grenade1")
+        {
+            myInventory.addTo(g1);
+            //Debug.Log("g1 added");
+        }
+
+        else if (gameObject.name == "Grenade2")
+        {
+            myInventory.addTo(g2);
+            //Debug.Log("g2 added");
+        }
+    }
 }

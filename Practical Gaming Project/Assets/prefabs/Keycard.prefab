@@ -22,9 +22,10 @@ GameObject:
   - component: {fileID: 33578124822064904}
   - component: {fileID: 65208949979605610}
   - component: {fileID: 23155992376726222}
+  - component: {fileID: 114926277810164392}
   m_Layer: 0
   m_Name: Keycard
-  m_TagString: keycard
+  m_TagString: pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,3 +96,14 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114926277810164392
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1862776734270144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e63e5a41b20a40c478864586da4a9393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

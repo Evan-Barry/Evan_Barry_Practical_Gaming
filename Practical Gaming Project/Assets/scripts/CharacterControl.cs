@@ -20,6 +20,9 @@ public class CharacterControl : MonoBehaviour {
     public GameObject GM;
     TestInventory ti;
 
+    public GameObject pickup;
+    showText st;
+
     String pickupName;
 
 
@@ -30,6 +33,8 @@ public class CharacterControl : MonoBehaviour {
 
         GM = GameObject.FindGameObjectWithTag("GM");
         ti = GM.GetComponent<TestInventory>();
+
+        pickup
     }
 	
 	// Update is called once per frame
@@ -227,6 +232,7 @@ public class CharacterControl : MonoBehaviour {
         {
             pickupName = other.gameObject.name;
             Debug.Log("You picked up " + pickupName);
+            
             ti.add(other.gameObject);
         }
 

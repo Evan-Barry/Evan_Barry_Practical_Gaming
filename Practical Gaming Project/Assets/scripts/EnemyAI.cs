@@ -27,7 +27,7 @@ public class EnemyAI : MonoBehaviour {
     //Following 5 lines of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
     public Vector3 startPos;
     public Vector3 endPos;
-	public float patrolDistance = 1;
+	public float patrolDistance = 10;
     private Vector3 tempPos;
 
     public float speed = 1.0f;
@@ -257,7 +257,7 @@ public class EnemyAI : MonoBehaviour {
             if(!playerScript.seen)
             {
                 timerScript.timerRunning = true;
-                timerScript.cautionCountdown();
+                timerScript.alertCountdown();
             }
 
             if(enemyToPlayerDistance > 15 || enemyToPlayerAngle > 67.5)
@@ -286,7 +286,7 @@ public class EnemyAI : MonoBehaviour {
                 }
             }
 
-            if(timerScript.cautionTime <= 0f)
+            if(timerScript.alertTime <= 0f)
             {
                 currentTransition = Transition.findNothing;
             }

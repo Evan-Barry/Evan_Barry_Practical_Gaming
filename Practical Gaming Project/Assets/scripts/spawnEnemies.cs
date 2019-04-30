@@ -17,12 +17,8 @@ public class spawnEnemies : MonoBehaviour {
 
     void Spawn()
     {
-        Debug.Log("Spawn start");
-
         if(spawnPoints.Count > 0)
         {
-            Debug.Log("Spawn IF start");
-
             int spawnPointIndex = Random.Range(0, spawnPoints.Count);
 
             Instantiate(enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);

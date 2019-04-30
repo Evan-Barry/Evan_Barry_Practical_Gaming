@@ -20,7 +20,7 @@ public class CharacterControl : MonoBehaviour {
     public GameObject GM;
     TestInventory ti;
 
-    public GameObject pickup;
+    public GameObject[] pickup;
     showText st;
 
     String pickupName;
@@ -33,8 +33,6 @@ public class CharacterControl : MonoBehaviour {
 
         GM = GameObject.FindGameObjectWithTag("GM");
         ti = GM.GetComponent<TestInventory>();
-
-        pickup
     }
 	
 	// Update is called once per frame
@@ -228,14 +226,14 @@ public class CharacterControl : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("pickup"))
+        if (other.gameObject.CompareTag("pickup"))
         {
             pickupName = other.gameObject.name;
             Debug.Log("You picked up " + pickupName);
-            
             ti.add(other.gameObject);
         }
 
         Destroy(other.gameObject);
     }
+
 }

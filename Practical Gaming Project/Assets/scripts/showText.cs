@@ -16,47 +16,6 @@ public class showText : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            if(textChanged != upDown.Down)
-            {
-                text.text = "Text Changed";
-                textChanged = upDown.Down;
-            }
-
-            else
-            {
-                text.text = "Text Changed Back";
-                textChanged = upDown.Up;
-            }
-        }
 
 	}
-
-    private void Awake()
-    {
-        GameObject canvasGO = new GameObject();
-        canvasGO.name = "Canvas";
-        canvasGO.AddComponent<Canvas>();
-
-        Canvas canvas;
-        canvas = canvasGO.GetComponent<Canvas>();
-
-        GameObject textGO = new GameObject();
-        textGO.transform.parent = canvasGO.transform;
-        textGO.AddComponent<Text>();
-    }
-
-    public void Text()
-    {
-        text.text = gameObject.name;
-        StartCoroutine("WaitForSec");
-    }
-
-    IEnumerator WaitForSec()
-    {
-        yield return new WaitForSeconds(2);
-        text.text = "";
-    }
 }

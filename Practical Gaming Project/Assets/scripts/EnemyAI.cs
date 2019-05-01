@@ -7,8 +7,8 @@ using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour {
 
     Vector3 enemyToPlayerVector;
-    double enemyToPlayerDistance;
-    double enemyToPlayerAngle;
+    public double enemyToPlayerDistance;
+    public double enemyToPlayerAngle;
 
     public GameObject playerGO;
     public GameObject GM;
@@ -30,23 +30,15 @@ public class EnemyAI : MonoBehaviour {
 
     public Vector3 playerPos;
 
-    public float speed = 1.0f;
-
-    private float startTime;
-
-    public float waitTime = 1.0f;
-
-    private float journeyLength;
-
-    private bool swapped = false;
-    private bool turned = true;
+    public bool swapped = false;
+	public bool searched = false;
 
     private IEnumerator turnCoroutine;
     private IEnumerator patrolCoroutine;
 
     public Quaternion startRotation;
 
-    //public NavMeshAgent agent;
+    public NavMeshAgent agent;
     
     // Use this for initialization
     void Start () {
@@ -56,9 +48,9 @@ public class EnemyAI : MonoBehaviour {
 		endPos = startPos + (transform.forward * patrolDistance);
 
         //Following 2 line of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
-        startTime = Time.time;
+        //startTime = Time.time;
 
-        journeyLength = Vector3.Distance(startPos, endPos);
+        //journeyLength = Vector3.Distance(startPos, endPos);
 
         playerGO = GameObject.FindGameObjectWithTag("Player");
         playerScript = playerGO.GetComponent<CharacterControl>();
@@ -66,7 +58,7 @@ public class EnemyAI : MonoBehaviour {
         GM = GameObject.FindGameObjectWithTag("GM");
         gameOverScript = GM.GetComponent<gameOverText>();
 
-        //agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
 
         startRotation = transform.rotation;
     }
@@ -145,44 +137,20 @@ public class EnemyAI : MonoBehaviour {
         if(currentState == State.patrolling)
         {
             //patrolling actions start
-            if(transform.position != endPos)
+			if(transform.position.x != endPos.x || transform.position.z != endPos.z)
             {
-                //patrolCoroutine = patrol(waitTime);
-                //StartCoroutine(patrolCoroutine);
-
-                //float distCovered = (Time.time - startTime) * speed;
-
-                //float fracJourney = distCovered / journeyLength;
-                //yield return new WaitForSeconds(wait);
-                transform.LookAt(endPos);
-                moveToPoint(endPos);
-                //transform.position = Vector3.Lerp(startPos, endPos, fracJourney);
+				transform.LookAt(new Vector3(endPos.x, transform.position.y, endPos.z));
+				moveToPoint(new Vector3(endPos.x, transform.position.y, endPos.z));
                 swapped = false;
 
             }
-            else if(transform.position == endPos && swapped == false)
+			else if(transform.position.x == endPos.x && transform.position.z == endPos.z && swapped == false)
             {
-                //turnToEndPos();
+                Debug.Log("Turning");
+                swapPoints();
 
-                if (turned)
-                {
-                    turned = false;
-                    Debug.Log("Turning");
-                    swapPoints();
-
-                    transform.rotation *= Quaternion.Euler(0f, 180f, 0f);
-
-                    turned = true;
-                    Debug.Log("Turned");
-                    waitTime = UnityEngine.Random.Range(0.5f, 2.0f);
-                    speed = UnityEngine.Random.Range(0.5f, 1.5f);
-                }
-
-                //turnCoroutine = turnToEndPos(waitTime);
-                //StartCoroutine(turnCoroutine);
-                //updatePatrol();
-
-
+                transform.rotation *= Quaternion.Euler(0f, 180f, 0f);
+                Debug.Log("Turned");
             }
 
             //patrolling actions end
@@ -207,6 +175,7 @@ public class EnemyAI : MonoBehaviour {
                 {
                     Debug.Log("SEE SOMETHING");
                     currentTransition = Transition.seeSomething;
+					playerPos = playerGO.transform.position;
                 }
             }
             //patrolling transition end
@@ -230,69 +199,66 @@ public class EnemyAI : MonoBehaviour {
         {
             //caution transition start
 
-            checkForPlayer();
+			if (enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45) 
+			{
+				RaycastHit hit;
+
+				if (Physics.Raycast (transform.position, enemyToPlayerVector, out hit, 10f) && hit.transform.CompareTag ("Player")) {
+					currentTransition = Transition.playerSeen;
+				}
+			}
+
+//			else if (enemyToPlayerDistance > 20) 
+//			{
+//				currentTransition = Transition.findNothing;
+//			}
             
             //caution transition end
 
             //caution actions start
+//			while(transform.position.x != playerPos.x || transform.position.z != transform.position.z)
+//			{
+//				
+//			}
 
-            playerPos = playerGO.transform.position;
-            moveToPoint(playerPos);
+			if ((transform.position.x != playerPos.x || transform.position.z != transform.position.z) && !searched) 
+			{
+				moveToPoint(new Vector3(playerPos.x, transform.position.y, playerPos.z));
+				Debug.Log ("Moving to player");
+			} 
 
-            if(transform.position == playerPos)
-            {
-                lookAround();
-            }
+			else 
+			{
+				searched = true;
 
-            moveToPoint(startPos);
+				if(transform.position.x == playerPos.x && transform.position.z == transform.position.z)
+				{
+					Debug.Log ("At playerPos");
+					transform.LookAt(new Vector3(startPos.x, transform.position.y, startPos.z));
+					moveToPoint(new Vector3(startPos.x, transform.position.y, startPos.z));
+				}
 
-            if(transform.position == startPos)
-            {
-                currentTransition = Transition.findNothing;
-            }
-            
+				//moveToPoint(startPos);
+
+				if(transform.position.x == startPos.x && transform.position.z == transform.position.z)
+				{
+					searched = false;
+					currentTransition = Transition.findNothing;
+				}
+			}
+ 
         }
-    }
-
-    private void checkForPlayer()
-    {
-        //throw new NotImplementedException();
-        if (enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45)
-        {
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 10f) && hit.transform.CompareTag("Player"))
-            {
-                currentTransition = Transition.playerSeen;
-            }
-
-        }
-    }
-
-    private void lookAround()
-    {
-        //throw new NotImplementedException();
-
-        //look left code
-
-        checkForPlayer();
-
-        //look right code
-
-        checkForPlayer();
     }
 
     private void moveToPoint(Vector3 point)
     {
-        //throw new NotImplementedException();
-
         //navmesh
-        NavMeshAgent agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
         agent.destination = point;
     }
 
     private void gameOver(String outcome)
     {
-        //throw new NotImplementedException();
         if(outcome == "L")
         {
             gameOverScript.gameOver();
@@ -302,41 +268,21 @@ public class EnemyAI : MonoBehaviour {
         {
             gameOverScript.win();
         }
-        
-        
-    }
+	}
 
     Vector3 getEnemytoPlayerVector()
     {
-        //Debug.Log("Enemy to Player Vector" + enemyToPlayerVector);
-
         return playerGO.transform.position - transform.position;
     }
 
     double getEnemyToPlayerDistance()
     {
-        //Debug.Log("Enemy to Player Distance - " + enemyToPlayerDistance);
-
         return Math.Sqrt((enemyToPlayerVector.x * enemyToPlayerVector.x) + (enemyToPlayerVector.y * enemyToPlayerVector.y) + (enemyToPlayerVector.z * enemyToPlayerVector.z));
     }
 
     double getAngleToPlayer()
     {
-        //Debug.Log("Enemy to Player Angle - " + Vector3.Angle(enemyToPlayerVector, transform.forward));
-
         return Vector3.Angle(getEnemytoPlayerVector(), transform.forward);
-    }
-
-    IEnumerator patrol(float wait)
-    {
-        //Following 3 line of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
-        float distCovered = (Time.time - startTime) * speed;
-
-        float fracJourney = distCovered / journeyLength;
-        yield return new WaitForSeconds(wait);
-        transform.LookAt(endPos);
-        transform.position = Vector3.Lerp(startPos, endPos, fracJourney);
-        swapped = false;
     }
 
     void swapPoints()
@@ -346,40 +292,4 @@ public class EnemyAI : MonoBehaviour {
         endPos = tempPos;
         swapped = true;
     }
-
-    void updatePatrol()
-    {
-        //Following 2 line of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
-        startTime = Time.time;
-
-        journeyLength = Vector3.Distance(startPos, endPos);
-    }
-
-    void chase(Transform playerPos)
-    {
-        float distCovered = (Time.time - startTime) * speed;
-
-        float fracJourney = distCovered / journeyLength;
-        transform.position = Vector3.Lerp(transform.position, playerPos.position, fracJourney);
-    }
-
-    IEnumerator turnToEndPos(float wait)
-    {
-        if(turned)
-        {
-            turned = false;
-            Debug.Log("Turning");
-            yield return new WaitForSeconds(wait);
-            swapPoints();
-
-            transform.rotation *= Quaternion.Euler(0f, 180f, 0f);
-
-            turned = true;
-            Debug.Log("Turned");
-            waitTime = UnityEngine.Random.Range(0.5f, 2.0f);
-            speed = UnityEngine.Random.Range(0.5f, 1.5f);
-        }
-    }
-
-
 }

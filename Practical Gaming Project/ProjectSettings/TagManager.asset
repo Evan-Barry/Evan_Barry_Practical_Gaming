@@ -11,6 +11,8 @@ TagManager:
   - floor
   - pickup
   - keycard
+  - gameOverPanel
+  - panelText
   layers:
   - Default
   - TransparentFX

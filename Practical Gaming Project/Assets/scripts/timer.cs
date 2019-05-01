@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class timer : MonoBehaviour {
 
-    public float alertTime = 5;
+    public float lookTime = 2;
     public bool timerRunning = false;
 
 	// Use this for initialization
@@ -18,17 +18,17 @@ public class timer : MonoBehaviour {
 	    
         if(!timerRunning)
         {
-            alertTime = 5f;
+            lookTime = 2f;
         }
 
-        if(alertTime <= 0)
+        if(lookTime <= 0)
         {
-            alertTime = 0;
+            lookTime = 0;
         }
     }
 
-    public void alertCountdown()
+    public void countdown()
     {
-        alertTime -= Time.deltaTime;
+        lookTime -= Time.deltaTime;
     }
 }

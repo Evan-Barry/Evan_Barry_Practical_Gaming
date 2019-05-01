@@ -12,16 +12,14 @@ public class EnemyAI : MonoBehaviour {
 
     public GameObject playerGO;
     public GameObject GM;
-    public GameObject spotlight;
     CharacterControl playerScript;
-    timer timerScript;
-    Light spot;
+    gameOverText gameOverScript;
 
     enum State { patrolling, caution, alert };
     State currentState = State.patrolling;
     State previousState;
 
-    enum Transition { playerSeen, playerLost, hearSomething, findNothing};
+    enum Transition { playerSeen, seeSomething, findNothing};
     Transition currentTransition = Transition.findNothing;
 
     //Following 5 lines of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
@@ -29,6 +27,8 @@ public class EnemyAI : MonoBehaviour {
     public Vector3 endPos;
 	public float patrolDistance = 10;
     private Vector3 tempPos;
+
+    public Vector3 playerPos;
 
     public float speed = 1.0f;
 
@@ -43,6 +43,8 @@ public class EnemyAI : MonoBehaviour {
 
     private IEnumerator turnCoroutine;
     private IEnumerator patrolCoroutine;
+
+    public Quaternion startRotation;
 
     //public NavMeshAgent agent;
     
@@ -62,12 +64,11 @@ public class EnemyAI : MonoBehaviour {
         playerScript = playerGO.GetComponent<CharacterControl>();
 
         GM = GameObject.FindGameObjectWithTag("GM");
-        timerScript = GM.GetComponent<timer>();
-
-        spotlight = transform.GetChild(0).gameObject;
-        spot = spotlight.GetComponent<Light>();
+        gameOverScript = GM.GetComponent<gameOverText>();
 
         //agent = GetComponent<NavMeshAgent>();
+
+        startRotation = transform.rotation;
     }
 
     // Update is called once per frame
@@ -90,7 +91,7 @@ public class EnemyAI : MonoBehaviour {
                             currentState = State.alert;
                             break;
 
-                        case Transition.hearSomething:
+                        case Transition.seeSomething:
                             previousState = State.patrolling;
                             currentState = State.caution;
                             break;
@@ -101,20 +102,20 @@ public class EnemyAI : MonoBehaviour {
                     break;
                 }
 
-            case State.alert:
-                {
-                    switch(currentTransition)
-                    {
-                        case Transition.playerLost:
-                            previousState = State.alert;
-                            currentState = State.caution;
-                            break;
+            //case State.alert:
+            //    {
+            //        switch(currentTransition)
+            //        {
+            //            case Transition.playerLost:
+            //                previousState = State.alert;
+            //                currentState = State.caution;
+            //                break;
 
-                        default:
-                            break;
-                    }
-                    break;
-                }
+            //            default:
+            //                break;
+            //        }
+            //        break;
+            //    }
 
             case State.caution:
                 {
@@ -146,22 +147,42 @@ public class EnemyAI : MonoBehaviour {
             //patrolling actions start
             if(transform.position != endPos)
             {
-                patrolCoroutine = patrol(waitTime);
-                StartCoroutine(patrolCoroutine);
-                
+                //patrolCoroutine = patrol(waitTime);
+                //StartCoroutine(patrolCoroutine);
+
+                //float distCovered = (Time.time - startTime) * speed;
+
+                //float fracJourney = distCovered / journeyLength;
+                //yield return new WaitForSeconds(wait);
+                transform.LookAt(endPos);
+                moveToPoint(endPos);
+                //transform.position = Vector3.Lerp(startPos, endPos, fracJourney);
+                swapped = false;
+
             }
             else if(transform.position == endPos && swapped == false)
             {
                 //turnToEndPos();
-                turnCoroutine = turnToEndPos(waitTime);
-                StartCoroutine(turnCoroutine);
-                updatePatrol();
-            }
 
-            if(spot != null)
-            {
-                spot.range = 10;
-                spot.spotAngle = 90;
+                if (turned)
+                {
+                    turned = false;
+                    Debug.Log("Turning");
+                    swapPoints();
+
+                    transform.rotation *= Quaternion.Euler(0f, 180f, 0f);
+
+                    turned = true;
+                    Debug.Log("Turned");
+                    waitTime = UnityEngine.Random.Range(0.5f, 2.0f);
+                    speed = UnityEngine.Random.Range(0.5f, 1.5f);
+                }
+
+                //turnCoroutine = turnToEndPos(waitTime);
+                //StartCoroutine(turnCoroutine);
+                //updatePatrol();
+
+
             }
 
             //patrolling actions end
@@ -169,22 +190,24 @@ public class EnemyAI : MonoBehaviour {
             //patrolling transition start
             if (enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45)
             {
-                Debug.Log("Player in enemy scope, obstructed");
+                //Debug.Log("Player in enemy scope, obstructed");
 
                 RaycastHit hit;
                 if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 10f) && hit.transform.CompareTag("Player"))
                 {
                     Debug.Log("Enemy Sighted!");
                     currentTransition = Transition.playerSeen;
-                    playerScript.seen = true;
                 }
             }
 
-            else if((enemyToPlayerDistance > 10 && enemyToPlayerDistance <= 15) && playerScript.currentStance == CharacterControl.stance.standing && playerScript.moving == true)
+            else if((enemyToPlayerDistance > 10 && enemyToPlayerDistance <= 20))
             {
-                Debug.Log("SOMETHING HEARD");
-                currentTransition = Transition.hearSomething;
-                playerScript.seen = false;
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 20f) && hit.transform.CompareTag("Player"))
+                {
+                    Debug.Log("SEE SOMETHING");
+                    currentTransition = Transition.seeSomething;
+                }
             }
             //patrolling transition end
 
@@ -193,113 +216,94 @@ public class EnemyAI : MonoBehaviour {
 
         else if(currentState == State.alert)
         {
-            //alert transition start
-            //playerLost if player is not seen by enemy for 10 seconds
-            if(!playerScript.seen)
-            {
-                timerScript.timerRunning = true;
-                timerScript.alertCountdown();
-            }
+            ////alert actions start
+            
+            ////agent.SetDestination(playerGO.transform.position);
 
-            else
-            {
-                transform.LookAt(new Vector3(playerGO.transform.position.x, playerGO.transform.position.y, playerGO.transform.position.z));
-                //agent.destination = playerGO.transform.position;
-            }
+            ////chase(playerGO.transform);
 
-            if (enemyToPlayerDistance > 10 || enemyToPlayerAngle > 45)
-            {
-                //RaycastHit hit;
-                //if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 10f) && !hit.transform.CompareTag("Player"))
-                //{
-                    playerScript.seen = false;
-                //}
-            }         
+            gameOver("L");
 
-            if (enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45)
-            {
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 10f) && hit.transform.CompareTag("Player"))
-                {
-                    playerScript.seen = true;
-                    timerScript.timerRunning = false;
-                    currentTransition = Transition.playerSeen;
-                }
-
-                else
-                {
-                    playerScript.seen = false;
-                    timerScript.timerRunning = true;
-                }
-            }
-
-            if(timerScript.alertTime <= 0f)
-            {
-                currentTransition = Transition.playerLost;
-            }
-            //transition complete
-
-            //alert actions start
-            if(spot != null)
-            {
-                spot.range = 10f;
-                spot.spotAngle = 90f;
-            }
-            //agent.SetDestination(playerGO.transform.position);
-
-            //chase(playerGO.transform);
         }
 
         else//state.caution
         {
             //caution transition start
-        
-            if(!playerScript.seen)
-            {
-                timerScript.timerRunning = true;
-                timerScript.alertCountdown();
-            }
 
-            if(enemyToPlayerDistance > 15 || enemyToPlayerAngle > 67.5)
-            {
-                //RaycastHit hit;
-                //if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 10f) && !hit.transform.CompareTag("Player"))
-                //{
-                    playerScript.seen = false;
-                //}
-            }
-
-            if(enemyToPlayerDistance <= 15 && enemyToPlayerAngle <= 67.5)
-            {
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 15f) && hit.transform.CompareTag("Player"))
-                {
-                    playerScript.seen = true;
-                    timerScript.timerRunning = false;
-                    currentTransition = Transition.playerSeen;
-                }
-
-                else
-                {
-                    playerScript.seen = false;
-                    timerScript.timerRunning = true;
-                }
-            }
-
-            if(timerScript.alertTime <= 0f)
-            {
-                currentTransition = Transition.findNothing;
-            }
+            checkForPlayer();
+            
             //caution transition end
 
             //caution actions start
-            if(spot != null)
+
+            playerPos = playerGO.transform.position;
+            moveToPoint(playerPos);
+
+            if(transform.position == playerPos)
             {
-                spot.range = 15;
-                spot.spotAngle = 135;
+                lookAround();
+            }
+
+            moveToPoint(startPos);
+
+            if(transform.position == startPos)
+            {
+                currentTransition = Transition.findNothing;
             }
             
         }
+    }
+
+    private void checkForPlayer()
+    {
+        //throw new NotImplementedException();
+        if (enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 10f) && hit.transform.CompareTag("Player"))
+            {
+                currentTransition = Transition.playerSeen;
+            }
+
+        }
+    }
+
+    private void lookAround()
+    {
+        //throw new NotImplementedException();
+
+        //look left code
+
+        checkForPlayer();
+
+        //look right code
+
+        checkForPlayer();
+    }
+
+    private void moveToPoint(Vector3 point)
+    {
+        //throw new NotImplementedException();
+
+        //navmesh
+        NavMeshAgent agent = GetComponent<NavMeshAgent>();
+        agent.destination = point;
+    }
+
+    private void gameOver(String outcome)
+    {
+        //throw new NotImplementedException();
+        if(outcome == "L")
+        {
+            gameOverScript.gameOver();
+        }
+
+        else
+        {
+            gameOverScript.win();
+        }
+        
+        
     }
 
     Vector3 getEnemytoPlayerVector()

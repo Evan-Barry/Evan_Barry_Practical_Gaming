@@ -176,19 +176,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerGO: {fileID: 0}
   GM: {fileID: 0}
-  spotlight: {fileID: 0}
   startPos: {x: 0, y: 0, z: 0}
   endPos: {x: 0, y: 0, z: 0}
   patrolDistance: 10
+  playerPos: {x: 0, y: 0, z: 0}
   speed: 1
   waitTime: 1
+  startRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!195 &195820024570136364
 NavMeshAgent:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1479249457801354}
-  m_Enabled: 0
+  m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5

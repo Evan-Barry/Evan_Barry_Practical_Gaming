@@ -41,35 +41,29 @@ public class gameOverText : MonoBehaviour {
 
     IEnumerator fadePanelOverTime(Color start, Color end, float duration)
     {
-        Debug.Log("In fadeOverTime coroutine");
-
         Image img = GameObject.FindGameObjectWithTag("gameOverPanel").GetComponent<Image>();
 
         for (float t = 0f; t < duration; t += Time.deltaTime)
         {
             float normalizedTime = t / duration;
-            //right here, you can now use normalizedTime as the third parameter in any Lerp from start to end
             img.color = Color.Lerp(start, end, normalizedTime);
 
             yield return null;
         }
-        colourValue = end; //without this, the value will end at something like 0.9992367
+        colourValue = end;
     }
 
     IEnumerator fadeTextOverTime(Color start, Color end, float duration)
     {
-        Debug.Log("In fadeOverTime coroutine");
-
         Text txt = GameObject.FindGameObjectWithTag("panelText").GetComponent<Text>();
 
         for (float t = 0f; t < duration; t += Time.deltaTime)
         {
             float normalizedTime = t / duration;
-            //right here, you can now use normalizedTime as the third parameter in any Lerp from start to end
             txt.color = Color.Lerp(start, end, normalizedTime);
 
             yield return null;
         }
-        colourValue = end; //without this, the value will end at something like 0.9992367
+        colourValue = end;
     }
 }

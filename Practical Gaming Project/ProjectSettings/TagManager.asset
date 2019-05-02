@@ -13,6 +13,7 @@ TagManager:
   - keycard
   - gameOverPanel
   - panelText
+  - walkthroughWall
   layers:
   - Default
   - TransparentFX

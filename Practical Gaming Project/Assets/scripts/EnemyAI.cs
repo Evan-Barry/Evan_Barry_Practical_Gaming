@@ -44,13 +44,8 @@ public class EnemyAI : MonoBehaviour {
     void Start () {
 
         startPos = transform.position;
-        //endPos = new Vector3(startPos.x, startPos.y, startPos.z + 5);
 		endPos = startPos + (transform.forward * patrolDistance);
-
-        //Following 2 line of code from https://docs.unity3d.com/ScriptReference/Vector3.Lerp.html
-        //startTime = Time.time;
-
-        //journeyLength = Vector3.Distance(startPos, endPos);
+        
 
         playerGO = GameObject.FindGameObjectWithTag("Player");
         playerScript = playerGO.GetComponent<CharacterControl>();
@@ -70,7 +65,7 @@ public class EnemyAI : MonoBehaviour {
         enemyToPlayerDistance = getEnemyToPlayerDistance();
         enemyToPlayerAngle = getAngleToPlayer();
 
-        Debug.DrawRay(transform.position, enemyToPlayerVector, Color.red);
+        Debug.DrawRay(transform.position + new Vector3(0,1,0), enemyToPlayerVector, Color.red);
 
         switch (currentState)
         {
@@ -156,97 +151,86 @@ public class EnemyAI : MonoBehaviour {
             //patrolling actions end
 
             //patrolling transition start
-            if (enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45)
+            if (enemyToPlayerDistance <= 5 && enemyToPlayerAngle <= 45)
             {
-                //Debug.Log("Player in enemy scope, obstructed");
-
                 RaycastHit hit;
-                if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 10f) && hit.transform.CompareTag("Player"))
+                if (Physics.Raycast(transform.position + new Vector3(0, 1, 0), enemyToPlayerVector, out hit, 5f) && hit.transform.CompareTag("Player"))
                 {
                     Debug.Log("Enemy Sighted!");
                     currentTransition = Transition.playerSeen;
+                    Debug.Log(hit.collider.gameObject.name);
                 }
             }
 
-            else if((enemyToPlayerDistance > 10 && enemyToPlayerDistance <= 20))
+            else if((enemyToPlayerDistance > 5 && enemyToPlayerDistance <= 10) && enemyToPlayerAngle <= 45)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(transform.position, enemyToPlayerVector, out hit, 20f) && hit.transform.CompareTag("Player"))
+                if (Physics.Raycast(transform.position + new Vector3(0, 1, 0), enemyToPlayerVector, out hit, 10f) && hit.transform.CompareTag("Player"))
                 {
                     Debug.Log("SEE SOMETHING");
                     currentTransition = Transition.seeSomething;
 					playerPos = playerGO.transform.position;
+                    Debug.Log(hit.collider.gameObject.name);
                 }
             }
             //patrolling transition end
-
-            //Debug.Log("End of patrolling");
         }
 
         else if(currentState == State.alert)
         {
-            ////alert actions start
-            
-            ////agent.SetDestination(playerGO.transform.position);
-
-            ////chase(playerGO.transform);
-
             gameOver("L");
-
         }
 
         else//state.caution
         {
             //caution transition start
 
-			if (enemyToPlayerDistance <= 10 && enemyToPlayerAngle <= 45) 
+			if (enemyToPlayerDistance <= 5 && enemyToPlayerAngle <= 45) 
 			{
 				RaycastHit hit;
 
-				if (Physics.Raycast (transform.position, enemyToPlayerVector, out hit, 10f) && hit.transform.CompareTag ("Player")) {
+				if (Physics.Raycast (transform.position + new Vector3(0, 1, 0), enemyToPlayerVector, out hit, 5f) && hit.transform.CompareTag ("Player")) {
 					currentTransition = Transition.playerSeen;
+                    Debug.Log(hit.collider.gameObject.name);
 				}
 			}
 
-//			else if (enemyToPlayerDistance > 20) 
-//			{
-//				currentTransition = Transition.findNothing;
-//			}
-            
-            //caution transition end
+            if ((transform.position.x != playerPos.x || transform.position.z != transform.position.z) && !searched)
+            {
+                moveToPoint(new Vector3(playerPos.x, transform.position.y, playerPos.z));
+                Debug.Log("Moving to player");
 
-            //caution actions start
-//			while(transform.position.x != playerPos.x || transform.position.z != transform.position.z)
-//			{
-//				
-//			}
+                RaycastHit hit;
 
-			if ((transform.position.x != playerPos.x || transform.position.z != transform.position.z) && !searched) 
-			{
-				moveToPoint(new Vector3(playerPos.x, transform.position.y, playerPos.z));
-				Debug.Log ("Moving to player");
-			} 
+                if (Physics.Raycast(transform.position + new Vector3(0, 1, 0), enemyToPlayerVector, out hit, 10f) && hit.transform.CompareTag("walkthroughWall"))
+                {
+                    returnToStartPos();
+                    Debug.Log(hit.collider.gameObject.name);
+                }
+            }
 
-			else 
-			{
-				searched = true;
-
-				if(transform.position.x == playerPos.x && transform.position.z == transform.position.z)
-				{
-					Debug.Log ("At playerPos");
-					transform.LookAt(new Vector3(startPos.x, transform.position.y, startPos.z));
-					moveToPoint(new Vector3(startPos.x, transform.position.y, startPos.z));
-				}
-
-				//moveToPoint(startPos);
-
-				if(transform.position.x == startPos.x && transform.position.z == transform.position.z)
-				{
-					searched = false;
-					currentTransition = Transition.findNothing;
-				}
-			}
+            else
+            {
+                returnToStartPos();
+            }
  
+        }
+    }
+
+    private void returnToStartPos()
+    {
+        searched = true;
+
+        if (transform.position.x == playerPos.x && transform.position.z == transform.position.z)
+        {
+            transform.LookAt(new Vector3(startPos.x, transform.position.y, startPos.z));
+            moveToPoint(new Vector3(startPos.x, transform.position.y, startPos.z));
+        }
+
+        if (transform.position.x == startPos.x && transform.position.z == transform.position.z)
+        {
+            searched = false;
+            currentTransition = Transition.findNothing;
         }
     }
 

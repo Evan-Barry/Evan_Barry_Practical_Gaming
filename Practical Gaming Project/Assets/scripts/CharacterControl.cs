@@ -16,6 +16,7 @@ public class CharacterControl : MonoBehaviour {
     Animator anim;
 
     public Camera radarCamera;
+	public Camera mainCamera;
 
     public GameObject GM;
     TestInventory ti;
@@ -33,6 +34,9 @@ public class CharacterControl : MonoBehaviour {
 
         GM = GameObject.FindGameObjectWithTag("GM");
         ti = GM.GetComponent<TestInventory>();
+
+		radarCamera.enabled = false;
+		mainCamera.enabled = true;
     }
 	
 	// Update is called once per frame
@@ -74,8 +78,17 @@ public class CharacterControl : MonoBehaviour {
             printInventory();
         }
 
-        Camera.main.transform.position = transform.position + new Vector3(0, 4, -8);
-        radarCamera.transform.position = transform.position + new Vector3(0, 15, 0);
+		if (Input.GetKeyDown (KeyCode.C)) 
+		{
+			radarView();
+		}
+
+		if (mainCamera.enabled) 
+		{
+			Camera.main.transform.position = transform.position + new Vector3(0, 4, -8);
+			radarCamera.transform.position = transform.position + new Vector3(0, 15, 0);
+		}
+        
     }
 
     /// <summary>
@@ -231,9 +244,18 @@ public class CharacterControl : MonoBehaviour {
             pickupName = other.gameObject.name;
             Debug.Log("You picked up " + pickupName);
             ti.add(other.gameObject);
+			Destroy(other.gameObject);
         }
-
-        Destroy(other.gameObject);
     }
+
+	private void radarView()
+	{
+		if (Camera.main.enabled) 
+		{
+			radarCamera.enabled = !radarCamera.enabled;
+			mainCamera.enabled = !mainCamera.enabled;
+		}
+
+	}
 
 }

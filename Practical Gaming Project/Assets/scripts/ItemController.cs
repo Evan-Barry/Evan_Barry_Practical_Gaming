@@ -16,12 +16,18 @@ public class ItemController : MonoBehaviour {
 
         kc1 = Instantiate(keycard, new Vector3(-40, 1, 6.5f), transform.rotation);
         kc1.name = "Keycard1";
-        kc2 = Instantiate(keycard, new Vector3(-34, 1, -3), transform.rotation);
+		kc2 = Instantiate(keycard, new Vector3(-9, 1, -3), transform.rotation);
         kc2.name = "Keycard2";
-        kc3 = Instantiate(keycard, new Vector3(-9, 1, -3), transform.rotation);
+		kc2.SetActive (false);
+		kc3 = Instantiate(keycard, new Vector3(39, 1, 0), transform.rotation);
         kc3.name = "Keycard3";
-        kc4 = Instantiate(keycard, new Vector3(37.5f, 1, 13), transform.rotation);
+		kc3.SetActive (false);
+		kc4 = Instantiate(keycard, new Vector3(39, 1, -8), transform.rotation);
         kc4.name = "Keycard4";
+		kc4.SetActive (false);
+
+		g1 = Instantiate(keycard, new Vector3(39, 1, 15), transform.rotation);
+		g1.name = "StunGrenade";
 
         sl1 = Instantiate(spotlight, new Vector3(0, 3, 0), Quaternion.Euler(new Vector3 (90, 0, 0)));
         sl1.transform.SetParent(kc1.transform, false);
@@ -56,6 +62,24 @@ public class ItemController : MonoBehaviour {
         //    kc4.transform.Rotate(0, 1, 0);
         //}
     }
+
+	public void makeItemActive(Item item)
+	{
+		if (item.getName().Equals("Keycard 2")) 
+		{
+			kc2.SetActive (true);
+		}
+
+		if (item.getName().Equals("Keycard 3")) 
+		{
+			kc3.SetActive (true);
+		}
+
+		if (item.getName().Equals("Keycard 4")) 
+		{
+			kc4.SetActive (true);
+		}
+	}
 
     
 }

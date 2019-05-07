@@ -14,6 +14,11 @@ TagManager:
   - gameOverPanel
   - panelText
   - walkthroughWall
+  - cell1
+  - cell2
+  - cell3
+  - cell4
+  - cell5
   layers:
   - Default
   - TransparentFX

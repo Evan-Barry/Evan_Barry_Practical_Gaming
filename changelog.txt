@@ -1,0 +1,9 @@
+Changes since presentation
+
+7/5/19
+Added a function to change camera view. Player can now change from third person view to an overhead view to study map and surroundings
+Changed itesm to spawn only when previous item is picked up. This allows for proper game progression.
+
+9/5/19
+Added function that allows player to win. When user unlocks and enters the last cell, the game will display a message and end the game
+Changed player movement so player can only move when in third person mode. Overhead view only intender for player to check surroundings

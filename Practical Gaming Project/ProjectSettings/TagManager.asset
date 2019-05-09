@@ -19,6 +19,7 @@ TagManager:
   - cell3
   - cell4
   - cell5
+  - winTrigger
   layers:
   - Default
   - TransparentFX

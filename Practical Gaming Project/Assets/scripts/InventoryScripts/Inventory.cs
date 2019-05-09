@@ -23,6 +23,11 @@ public class Inventory : MonoBehaviour {
         Items.Add(newItem);
     }
 
+	public void removeFrom(Item oldItem)
+	{
+		Items.Remove(oldItem);
+	}
+
     internal Item getItem(int v)
     {
         return Items[v];

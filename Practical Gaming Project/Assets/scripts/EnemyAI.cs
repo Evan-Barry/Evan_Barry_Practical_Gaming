@@ -39,6 +39,8 @@ public class EnemyAI : MonoBehaviour {
     public Quaternion startRotation;
 
     public NavMeshAgent agent;
+
+	Animator anim;
     
     // Use this for initialization
     void Start () {
@@ -56,6 +58,8 @@ public class EnemyAI : MonoBehaviour {
         agent = GetComponent<NavMeshAgent>();
 
         startRotation = transform.rotation;
+
+		anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -178,7 +182,7 @@ public class EnemyAI : MonoBehaviour {
 
         else if(currentState == State.alert)
         {
-            gameOver("L");
+			gameOverScript.gameOver();
         }
 
         else//state.caution
@@ -239,20 +243,8 @@ public class EnemyAI : MonoBehaviour {
         //navmesh
         agent = GetComponent<NavMeshAgent>();
         agent.destination = point;
+		anim.SetBool("Moving", true);
     }
-
-    private void gameOver(String outcome)
-    {
-        if(outcome == "L")
-        {
-            gameOverScript.gameOver();
-        }
-
-        else
-        {
-            gameOverScript.win();
-        }
-	}
 
     Vector3 getEnemytoPlayerVector()
     {
@@ -271,6 +263,7 @@ public class EnemyAI : MonoBehaviour {
 
     void swapPoints()
     {
+		anim.SetBool("Moving", false);
         tempPos = startPos;
         startPos = endPos;
         endPos = tempPos;

@@ -10,7 +10,7 @@ public class TestInventory : MonoBehaviour {
 	public GameObject keycardGameObject;
 
     public Keycard k1, k2, k3, k4;
-    public Grenade g1, g2;
+    public Grenade g;
 
 	// Use this for initialization
 	void Start () {
@@ -26,8 +26,7 @@ public class TestInventory : MonoBehaviour {
 		k3.setName ("Keycard 3");
         k4 = new Keycard("Keycard 4");
 		k4.setName ("Keycard 4");
-        g1 = new Grenade("Stun Grenade");
-        g2 = new Grenade("Stun Grenade");
+        g = new Grenade("Stun Grenade");
         
 	}
 	
@@ -74,16 +73,10 @@ public class TestInventory : MonoBehaviour {
 			cell.SetActive (false);
         }
 
-        else if (gameObject.name == "Grenade1")
+        else if (gameObject.name == "StunGrenade")
         {
-            myInventory.addTo(g1);
+            myInventory.addTo(g);
             //Debug.Log("g1 added");
-        }
-
-        else if (gameObject.name == "Grenade2")
-        {
-            myInventory.addTo(g2);
-            //Debug.Log("g2 added");
         }
     }
 }

@@ -28,6 +28,8 @@ public class ItemController : MonoBehaviour {
 
 		g1 = Instantiate(keycard, new Vector3(39, 1, 15), transform.rotation);
 		g1.name = "StunGrenade";
+		g2 = Instantiate(keycard, new Vector3(-33, 1, -2), transform.rotation);
+		g2.name = "StunGrenade";
 
         sl1 = Instantiate(spotlight, new Vector3(0, 3, 0), Quaternion.Euler(new Vector3 (90, 0, 0)));
         sl1.transform.SetParent(kc1.transform, false);

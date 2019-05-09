@@ -26,6 +26,8 @@ public class CharacterControl : MonoBehaviour {
 
     String pickupName;
 
+	gameOverText gameOverScript;
+
 
     // Use this for initialization
     void Start () {
@@ -34,6 +36,7 @@ public class CharacterControl : MonoBehaviour {
 
         GM = GameObject.FindGameObjectWithTag("GM");
         ti = GM.GetComponent<TestInventory>();
+		gameOverScript = GM.GetComponent<gameOverText> ();
 
 		radarCamera.enabled = false;
 		mainCamera.enabled = true;
@@ -42,22 +45,22 @@ public class CharacterControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if(Input.GetKey(KeyCode.W))
+		if(Input.GetKey(KeyCode.W) && mainCamera.enabled)
         {
             moveUp(moveSpeed);
         }
 
-        else if (Input.GetKey(KeyCode.A))
+		else if (Input.GetKey(KeyCode.A) && mainCamera.enabled)
         {
             moveLeft(moveSpeed);
         }
 
-        else if (Input.GetKey(KeyCode.S))
+		else if (Input.GetKey(KeyCode.S) && mainCamera.enabled)
         {
             moveDown(moveSpeed);
         }
 
-        else if (Input.GetKey(KeyCode.D))
+		else if (Input.GetKey(KeyCode.D) && mainCamera.enabled)
         {
             moveRight(moveSpeed);
         }
@@ -78,9 +81,14 @@ public class CharacterControl : MonoBehaviour {
             printInventory();
         }
 
-		if (Input.GetKeyDown (KeyCode.C)) 
+		if (Input.GetKeyDown(KeyCode.C)) 
 		{
 			radarView();
+		}
+
+		if (Input.GetKeyDown(KeyCode.E)) 
+		{
+			throwGrenade();
 		}
 
 		if (mainCamera.enabled) 
@@ -246,6 +254,11 @@ public class CharacterControl : MonoBehaviour {
             ti.add(other.gameObject);
 			Destroy(other.gameObject);
         }
+
+		if (other.gameObject.CompareTag ("winTrigger")) 
+		{
+			gameOverScript.win();
+		}
     }
 
 	private void radarView()
@@ -255,6 +268,32 @@ public class CharacterControl : MonoBehaviour {
 			radarCamera.enabled = !radarCamera.enabled;
 			mainCamera.enabled = !mainCamera.enabled;
 		}
+
+	}
+
+	private void throwGrenade()
+	{
+		//check if grenade in inventory
+		//if true
+			//remove grenade from inventory
+			//make enemies "blind" for 5 secs
+		//if false
+			//do nothing
+
+		foreach(Item i in ti.myInventory.Items)
+		{
+			//Debug.Log ("Remove this item : " + i.getName());
+			if (i.getName() == "Stun Grenade") 
+			{
+				ti.myInventory.removeFrom(i);
+				blindEnemies();
+				break;
+			}
+		}
+	}
+
+	public void blindEnemies()
+	{
 
 	}
 

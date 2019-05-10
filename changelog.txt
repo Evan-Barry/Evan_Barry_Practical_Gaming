@@ -7,3 +7,7 @@ Changed itesm to spawn only when previous item is picked up. This allows for pro
 9/5/19
 Added function that allows player to win. When user unlocks and enters the last cell, the game will display a message and end the game
 Changed player movement so player can only move when in third person mode. Overhead view only intender for player to check surroundings
+Added robot enemy models instead of placeholder model of a rectangle
+
+10/5/19
+Added my own alien character instead of Ethan

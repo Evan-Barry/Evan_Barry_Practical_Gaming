@@ -86,11 +86,6 @@ public class CharacterControl : MonoBehaviour {
 			radarView();
 		}
 
-		if (Input.GetKeyDown(KeyCode.E)) 
-		{
-			throwGrenade();
-		}
-
 		if (mainCamera.enabled) 
 		{
 			Camera.main.transform.position = transform.position + new Vector3(0, 4, -8);
@@ -258,6 +253,8 @@ public class CharacterControl : MonoBehaviour {
 		if (other.gameObject.CompareTag ("winTrigger")) 
 		{
 			gameOverScript.win();
+			turn (directionFacing.down);
+			anim.SetBool ("Win", true);
 		}
     }
 
@@ -271,7 +268,7 @@ public class CharacterControl : MonoBehaviour {
 
 	}
 
-	private void throwGrenade()
+	private void throwGrenade()//does not work properly, only removes grenade from inventory
 	{
 		//check if grenade in inventory
 		//if true
@@ -286,15 +283,9 @@ public class CharacterControl : MonoBehaviour {
 			if (i.getName() == "Stun Grenade") 
 			{
 				ti.myInventory.removeFrom(i);
-				blindEnemies();
 				break;
 			}
 		}
-	}
-
-	public void blindEnemies()
-	{
-
 	}
 
 }

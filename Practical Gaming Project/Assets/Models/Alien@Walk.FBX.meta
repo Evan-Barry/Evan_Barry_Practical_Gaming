@@ -1,0 +1,256 @@
+fileFormatVersion: 2
+guid: 768d9fdc3380d1c47b1d6409f1cc7da7
+timeCreated: 1557505189
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Character
+    100004: Collarbone_L
+    100006: CollarBone_R
+    100008: Ear_Base_L
+    100010: Ear_Base_R
+    100012: Ear_End_L
+    100014: Ear_End_R
+    100016: Ear_Middle_L
+    100018: Ear_Middle_R
+    100020: Foot_L
+    100022: Foot_L 1
+    100024: Foot_Nub_L
+    100026: Foot_Nub_L 1
+    100028: Head
+    100030: Head_Num
+    100032: Hip
+    100034: Index_Finger_Base_L
+    100036: Index_Finger_Base_R
+    100038: Index_finger_End_L
+    100040: Index_Finger_End_R
+    100042: Index_finger_Middle_L
+    100044: Index_Finger_Middle_R
+    100046: Index_finger_Nub_L
+    100048: Index_Finger_Nub_R
+    100050: Little_Finger_Base_L
+    100052: Little_Finger_Base_R
+    100054: Little_Finger_End_L
+    100056: Little_Finger_End_R
+    100058: Little_Finger_End_R 1
+    100060: Little_Finger_Middle_L
+    100062: Little_Finger_Middle_R
+    100064: Little_Finger_Nub_L
+    100066: Lower_Arm_L
+    100068: Lower_Arm_R
+    100070: Lower_Leg_L
+    100072: Lower_Leg_L 1
+    100074: Middle_Finger_Base_L
+    100076: Middle_Finger_Base_R
+    100078: Middle_Finger_End_L
+    100080: Middle_Finger_End_R
+    100082: Middle_Finger_Middle_L
+    100084: Middle_Finger_Middle_R
+    100086: Middle_Finger_Nub_L
+    100088: Middle_Finger_Nub_R
+    100090: Palm_L
+    100092: Palm_Nub_L
+    100094: Palm_Nub_R
+    100096: Palm_R
+    100098: Spine_Lower
+    100100: Spine_Upper
+    100102: Thumb_Base_L
+    100104: Thumb_Base_R
+    100106: Thumb_End_L
+    100108: Thumb_End_R
+    100110: Thumb_Middle_L
+    100112: Thumb_Middle_R
+    100114: Thumb_Nub_L
+    100116: Thumb_Nub_R
+    100118: Upper_Arm_L
+    100120: Upper_Arm_R
+    100122: Upper_Leg_L
+    100124: Upper_Leg_R
+    100126: Wrist_L
+    100128: Wrist_Nub_L
+    100130: Wrist_Nub_R
+    100132: Wrist_R
+    400000: //RootNode
+    400002: Character
+    400004: Collarbone_L
+    400006: CollarBone_R
+    400008: Ear_Base_L
+    400010: Ear_Base_R
+    400012: Ear_End_L
+    400014: Ear_End_R
+    400016: Ear_Middle_L
+    400018: Ear_Middle_R
+    400020: Foot_L
+    400022: Foot_L 1
+    400024: Foot_Nub_L
+    400026: Foot_Nub_L 1
+    400028: Head
+    400030: Head_Num
+    400032: Hip
+    400034: Index_Finger_Base_L
+    400036: Index_Finger_Base_R
+    400038: Index_finger_End_L
+    400040: Index_Finger_End_R
+    400042: Index_finger_Middle_L
+    400044: Index_Finger_Middle_R
+    400046: Index_finger_Nub_L
+    400048: Index_Finger_Nub_R
+    400050: Little_Finger_Base_L
+    400052: Little_Finger_Base_R
+    400054: Little_Finger_End_L
+    400056: Little_Finger_End_R
+    400058: Little_Finger_End_R 1
+    400060: Little_Finger_Middle_L
+    400062: Little_Finger_Middle_R
+    400064: Little_Finger_Nub_L
+    400066: Lower_Arm_L
+    400068: Lower_Arm_R
+    400070: Lower_Leg_L
+    400072: Lower_Leg_L 1
+    400074: Middle_Finger_Base_L
+    400076: Middle_Finger_Base_R
+    400078: Middle_Finger_End_L
+    400080: Middle_Finger_End_R
+    400082: Middle_Finger_Middle_L
+    400084: Middle_Finger_Middle_R
+    400086: Middle_Finger_Nub_L
+    400088: Middle_Finger_Nub_R
+    400090: Palm_L
+    400092: Palm_Nub_L
+    400094: Palm_Nub_R
+    400096: Palm_R
+    400098: Spine_Lower
+    400100: Spine_Upper
+    400102: Thumb_Base_L
+    400104: Thumb_Base_R
+    400106: Thumb_End_L
+    400108: Thumb_End_R
+    400110: Thumb_Middle_L
+    400112: Thumb_Middle_R
+    400114: Thumb_Nub_L
+    400116: Thumb_Nub_R
+    400118: Upper_Arm_L
+    400120: Upper_Arm_R
+    400122: Upper_Leg_L
+    400124: Upper_Leg_R
+    400126: Wrist_L
+    400128: Wrist_Nub_L
+    400130: Wrist_Nub_R
+    400132: Wrist_R
+    4300000: Character
+    7400000: Walk
+    9500000: //RootNode
+    13700000: Character
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #85'
+    second: {fileID: 2100000, guid: 8d0a9d9d9573f2d4f968d246a61f6593, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Walk
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 44
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

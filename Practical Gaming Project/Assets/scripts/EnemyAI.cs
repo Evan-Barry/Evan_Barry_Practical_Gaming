@@ -14,10 +14,13 @@ public class EnemyAI : MonoBehaviour {
     public GameObject GM;
     CharacterControl playerScript;
     gameOverText gameOverScript;
+	spawnEnemies spawnEnemiesScript;
 
     enum State { patrolling, caution, alert };
     State currentState = State.patrolling;
     State previousState;
+
+	public bool readyToPatrol = false;
 
     enum Transition { playerSeen, seeSomething, findNothing};
     Transition currentTransition = Transition.findNothing;
@@ -44,22 +47,22 @@ public class EnemyAI : MonoBehaviour {
     
     // Use this for initialization
     void Start () {
-
-        startPos = transform.position;
-		endPos = startPos + (transform.forward * patrolDistance);
         
-
         playerGO = GameObject.FindGameObjectWithTag("Player");
         playerScript = playerGO.GetComponent<CharacterControl>();
 
         GM = GameObject.FindGameObjectWithTag("GM");
         gameOverScript = GM.GetComponent<gameOverText>();
+		spawnEnemiesScript = GM.GetComponent<spawnEnemies>();
 
         agent = GetComponent<NavMeshAgent>();
 
         startRotation = transform.rotation;
 
 		anim = GetComponent<Animator>();
+
+		startPos = transform.position;
+		endPos = startPos + (transform.forward * patrolDistance);
     }
 
     // Update is called once per frame
@@ -133,92 +136,77 @@ public class EnemyAI : MonoBehaviour {
         Debug.Log("Enemy State = " + currentState);
         Debug.Log("Enemy Transition = " + currentTransition);
 
-        if(currentState == State.patrolling)
-        {
-            //patrolling actions start
-			if(transform.position.x != endPos.x || transform.position.z != endPos.z)
-            {
-				transform.LookAt(new Vector3(endPos.x, transform.position.y, endPos.z));
-				moveToPoint(new Vector3(endPos.x, transform.position.y, endPos.z));
-                swapped = false;
+		if (currentState == State.patrolling) {
+			//patrolling actions start
 
-            }
-			else if(transform.position.x == endPos.x && transform.position.z == endPos.z && swapped == false)
-            {
-                Debug.Log("Turning");
-                swapPoints();
+			if (transform.position.x != endPos.x || transform.position.z != endPos.z) {
+				transform.LookAt (new Vector3 (endPos.x, transform.position.y, endPos.z));
+				moveToPoint (new Vector3 (endPos.x, transform.position.y, endPos.z));
+				swapped = false;
 
-                transform.rotation *= Quaternion.Euler(0f, 180f, 0f);
-                Debug.Log("Turned");
-            }
+			} else if (transform.position.x == endPos.x && transform.position.z == endPos.z && swapped == false) {
+				Debug.Log ("Turning");
+				swapPoints ();
 
-            //patrolling actions end
+				transform.rotation *= Quaternion.Euler (0f, 180f, 0f);
+				Debug.Log ("Turned");
+			}
 
-            //patrolling transition start
-            if (enemyToPlayerDistance <= 5 && enemyToPlayerAngle <= 45)
-            {
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position + new Vector3(0, 1, 0), enemyToPlayerVector, out hit, 5f) && hit.transform.CompareTag("Player"))
-                {
-                    Debug.Log("Enemy Sighted!");
-                    currentTransition = Transition.playerSeen;
-                    Debug.Log(hit.collider.gameObject.name);
-                }
-            }
+			//patrolling actions end
 
-            else if((enemyToPlayerDistance > 5 && enemyToPlayerDistance <= 10) && enemyToPlayerAngle <= 45)
-            {
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position + new Vector3(0, 1, 0), enemyToPlayerVector, out hit, 10f) && hit.transform.CompareTag("Player"))
-                {
-                    Debug.Log("SEE SOMETHING");
-                    currentTransition = Transition.seeSomething;
+			//patrolling transition start
+			if (enemyToPlayerDistance <= 5 && enemyToPlayerAngle <= 45) {
+				RaycastHit hit;
+				if (Physics.Raycast (transform.position + new Vector3 (0, 1, 0), enemyToPlayerVector, out hit, 5f) && hit.transform.CompareTag ("Player")) {
+					Debug.Log ("Enemy Sighted!");
+					currentTransition = Transition.playerSeen;
+					Debug.Log (hit.collider.gameObject.name);
+				}
+			} else if ((enemyToPlayerDistance > 5 && enemyToPlayerDistance <= 10) && enemyToPlayerAngle <= 45) {
+				RaycastHit hit;
+				if (Physics.Raycast (transform.position + new Vector3 (0, 1, 0), enemyToPlayerVector, out hit, 10f) && hit.transform.CompareTag ("Player")) {
+					Debug.Log ("SEE SOMETHING");
+					currentTransition = Transition.seeSomething;
 					playerPos = playerGO.transform.position;
-                    Debug.Log(hit.collider.gameObject.name);
-                }
-            }
-            //patrolling transition end
-        }
+					Debug.Log (hit.collider.gameObject.name);
+				}
+			}
+			//patrolling transition end
+		} else if (currentState == State.alert) {
+			gameOverScript.gameOver ();
+		} else {//state.caution
+			//caution transition start
 
-        else if(currentState == State.alert)
-        {
-			gameOverScript.gameOver();
-        }
-
-        else//state.caution
-        {
-            //caution transition start
-
-			if (enemyToPlayerDistance <= 5 && enemyToPlayerAngle <= 45) 
-			{
+			if (enemyToPlayerDistance <= 5 && enemyToPlayerAngle <= 45) {
 				RaycastHit hit;
 
-				if (Physics.Raycast (transform.position + new Vector3(0, 1, 0), enemyToPlayerVector, out hit, 5f) && hit.transform.CompareTag ("Player")) {
+				if (Physics.Raycast (transform.position + new Vector3 (0, 1, 0), enemyToPlayerVector, out hit, 5f) && hit.transform.CompareTag ("Player")) {
 					currentTransition = Transition.playerSeen;
-                    Debug.Log(hit.collider.gameObject.name);
+					Debug.Log (hit.collider.gameObject.name);
 				}
 			}
 
-            if ((transform.position.x != playerPos.x || transform.position.z != transform.position.z) && !searched)
-            {
-                moveToPoint(new Vector3(playerPos.x, transform.position.y, playerPos.z));
-                Debug.Log("Moving to player");
+			if ((transform.position.x != playerPos.x || transform.position.z != transform.position.z) && !searched) {
+				moveToPoint (new Vector3 (playerPos.x, transform.position.y, playerPos.z));
+				Debug.Log ("Moving to player");
 
-                RaycastHit hit;
+				RaycastHit hit;
 
-                if (Physics.Raycast(transform.position + new Vector3(0, 1, 0), enemyToPlayerVector, out hit, 10f) && hit.transform.CompareTag("walkthroughWall"))
-                {
-                    returnToStartPos();
-                    Debug.Log(hit.collider.gameObject.name);
-                }
-            }
-
-            else
-            {
-                returnToStartPos();
-            }
+				if (Physics.Raycast (transform.position + new Vector3 (0, 1, 0), enemyToPlayerVector, out hit, 10f) && hit.transform.CompareTag ("walkthroughWall")) {
+					returnToStartPos ();
+					Debug.Log (hit.collider.gameObject.name);
+				}
+			} else {
+				returnToStartPos ();
+			}
  
-        }
+		}
+
+		if (transform.position == startPos) 
+		{
+			readyToPatrol = true;
+		}
+
     }
 
     private void returnToStartPos()
